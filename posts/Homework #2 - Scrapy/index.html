@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Andrew Han">
+<meta name="dcterms.date" content="2024-02-05">
 
-<title>PIC16B</title>
+<title>PIC16B - Homework 2 - Scrapy</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -110,7 +146,39 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Homework 2 - Scrapy</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">week 5</div>
+                <div class="quarto-category">homework</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Andrew Han </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">February 5, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
@@ -121,7 +189,54 @@ ul.task-list li input[type="checkbox"] {
 
 
 
+<p><a href="https://andrewshan214.github.io/PIC16B/posts/Palmer%20Penguins/">Blog Post URL</a> <a href="https://andrewshan214.github.io/PIC16B/posts/Palmer%20Penguins/" class="uri">https://andrewshan214.github.io/PIC16B/posts/Palmer%20Penguins/</a> #Introduction</p>
+<p>In this blog post, I will be giving a tutorial on how to write a spider in scrapy to scrape information from a movie database. More specifically, I will be demonstrating using Christopher Nolan’s “The Dark Knight”, one of my favorite movies. Using the data that I scrape, I will create a chart to suggest movies based on the actors in “The Dark Knight”.</p>
+<section id="writing-the-movie-database-parse-function" class="level1">
+<h1>Writing the movie database parse() function</h1>
+<p>First we write the initial parse() function, shown below:</p>
+<div id="cell-3" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> parse(<span class="va">self</span>, response):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>        cast_crew_url <span class="op">=</span> <span class="ss">f"https://www.themoviedb.org/movie/155-the-dark-knight/cast"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">yield</span> scrapy.Request(cast_crew_url, callback<span class="op">=</span><span class="va">self</span>.parse_full_credits)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This method works by saving the url of the full cast and crew page of the movie website. I use scrapy’s built in functions to go into this website and call a second parse function that will save all of the nanmes of those that acted in the movie. The implementation of the second parse function is below.</p>
+</section>
+<section id="parse_full_credits-function-implementation" class="level1">
+<h1>parse_full_credits function implementation</h1>
+<div id="cell-6" class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> parse_full_credits(<span class="va">self</span>, response):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> cast_member <span class="kw">in</span> response.css(<span class="st">"ol.people.credits li"</span>):</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>            actor_url <span class="op">=</span> cast_member.css(<span class="st">'a::attr(href)'</span>).get()</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> actor_url:</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                <span class="cf">yield</span> scrapy.Request(url<span class="op">=</span>response.urljoin(actor_url), callback<span class="op">=</span><span class="va">self</span>.parse_actor_page)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Firstly, I iterated through all of the actors by using the css identifier of only actors by looking at the html code in the movie cast website. While iterating, I saved each actor’s unique page url in a variable. Using that url variable, I used Scrapy’s request function to go into the actor’s page.</p>
+<p>In this page, I called a third parse function.</p>
+</section>
+<section id="parse_actor_page-function-implementation" class="level1">
+<h1>parse_actor_page function implementation</h1>
+<div id="cell-9" class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> parse_actor_page(<span class="va">self</span>, response):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>        actor_name <span class="op">=</span> response.css(<span class="st">'div.title h2.title a::text'</span>).get()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        acting_roles <span class="op">=</span> response.css(<span class="st">'div.credits_list h3.zero:contains("Acting")'</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> acting_roles:</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> acting_role <span class="kw">in</span> acting_roles.xpath(<span class="st">'./following-sibling::table[@class="card credits"]//table[@class="credit_group"]'</span>):</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                movie_name <span class="op">=</span> acting_role.css(<span class="st">'td.role a.tooltip bdi::text'</span>).get()</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> movie_name:</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">yield</span> {</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>                        <span class="st">'actor'</span>: actor_name,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>                        <span class="st">'movie_or_TV_name'</span>: movie_name,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>                    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>I implemented this by first getting the actor’s name by using the css identifier from the website.</p>
+<p>Next, I sorted through only this actor’s acting roles by using the css identifier for acting roles, which was “Zero”. I iterated through all of these acting roles, and got each movie name, and yielded them into a dictionary of the actor’s name and the movies they’ve acted in.</p>
 
+
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

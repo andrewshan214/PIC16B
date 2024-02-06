@@ -7,6 +7,13 @@
     "text": "About this blog"
   },
   {
+    "objectID": "posts/Homework #2 - Scrapy/index.html",
+    "href": "posts/Homework #2 - Scrapy/index.html",
+    "title": "Homework 2 - Scrapy",
+    "section": "",
+    "text": "Blog Post URL https://andrewshan214.github.io/PIC16B/posts/Palmer%20Penguins/ #Introduction\nIn this blog post, I will be giving a tutorial on how to write a spider in scrapy to scrape information from a movie database. More specifically, I will be demonstrating using Christopher Nolan’s “The Dark Knight”, one of my favorite movies. Using the data that I scrape, I will create a chart to suggest movies based on the actors in “The Dark Knight”.\n\nWriting the movie database parse() function\nFirst we write the initial parse() function, shown below:\n\ndef parse(self, response):\n        cast_crew_url = f\"https://www.themoviedb.org/movie/155-the-dark-knight/cast\"\n        yield scrapy.Request(cast_crew_url, callback=self.parse_full_credits)\n\nThis method works by saving the url of the full cast and crew page of the movie website. I use scrapy’s built in functions to go into this website and call a second parse function that will save all of the nanmes of those that acted in the movie. The implementation of the second parse function is below.\n\n\nparse_full_credits function implementation\n\ndef parse_full_credits(self, response):\n        for cast_member in response.css(\"ol.people.credits li\"):\n            actor_url = cast_member.css('a::attr(href)').get()\n\n            if actor_url:\n                yield scrapy.Request(url=response.urljoin(actor_url), callback=self.parse_actor_page)\n\nFirstly, I iterated through all of the actors by using the css identifier of only actors by looking at the html code in the movie cast website. While iterating, I saved each actor’s unique page url in a variable. Using that url variable, I used Scrapy’s request function to go into the actor’s page.\nIn this page, I called a third parse function.\n\n\nparse_actor_page function implementation\n\ndef parse_actor_page(self, response):\n        actor_name = response.css('div.title h2.title a::text').get()\n\n        acting_roles = response.css('div.credits_list h3.zero:contains(\"Acting\")')\n        \n        if acting_roles:\n            for acting_role in acting_roles.xpath('./following-sibling::table[@class=\"card credits\"]//table[@class=\"credit_group\"]'):\n                movie_name = acting_role.css('td.role a.tooltip bdi::text').get()\n\n                if movie_name:\n                    yield {\n                        'actor': actor_name,\n                        'movie_or_TV_name': movie_name,\n                    }\n\nI implemented this by first getting the actor’s name by using the css identifier from the website.\nNext, I sorted through only this actor’s acting roles by using the css identifier for acting roles, which was “Zero”. I iterated through all of these acting roles, and got each movie name, and yielded them into a dictionary of the actor’s name and the movies they’ve acted in."
+  },
+  {
     "objectID": "posts/Palmer Penguins/index.html",
     "href": "posts/Palmer Penguins/index.html",
     "title": "Palmer Penguins Tutorial",
@@ -25,6 +32,6 @@
     "href": "index.html",
     "title": "PIC16B",
     "section": "",
-    "text": "Palmer Penguins Tutorial\n\n\n\n\n\n\nweek 3\n\n\nhomework\n\n\n\n\n\n\n\n\n\nJan 22, 2024\n\n\nAndrew Han\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nJan 19, 2024\n\n\nAndrew Han\n\n\n\n\n\n\nNo matching items"
+    "text": "Homework 2 - Scrapy\n\n\n\n\n\n\nweek 5\n\n\nhomework\n\n\n\n\n\n\n\n\n\nFeb 5, 2024\n\n\nAndrew Han\n\n\n\n\n\n\n\n\n\n\n\n\nPalmer Penguins Tutorial\n\n\n\n\n\n\nweek 3\n\n\nhomework\n\n\n\n\n\n\n\n\n\nJan 22, 2024\n\n\nAndrew Han\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nJan 19, 2024\n\n\nAndrew Han\n\n\n\n\n\n\nNo matching items"
   }
 ]
