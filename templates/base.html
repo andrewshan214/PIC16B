@@ -1,0 +1,17 @@
+<!doctype html>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<title>{% block title %}{% endblock %} - PIC16B Website</title>
+<nav>
+    <h1>PIC16B Message Bank!</h1>
+    <ul>
+        <li><a href="{{ url_for('base') }}">Main page</a></li>
+        <li><a href="{{ url_for('submit_message')}}">Submit Message</a></li>
+        <li><a href="{{ url_for('render_view_template') }}">View Messages</a></li>
+    </ul>
+<nav>
+<section class="content">
+    <header>
+    {% block header %}{% endblock %}
+    </header>
+    {% block content %}{% endblock %}
+</section>

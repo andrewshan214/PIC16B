@@ -1,0 +1,71 @@
+/* Import a custom font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* Apply the custom font to the entire body */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f0f0; /* Light gray background */
+    color: #333; /* Dark gray text */
+}
+
+/* Style the navigation bar */
+nav {
+    background-color: #333; /* Dark background color */
+    color: white; /* White text */
+    padding: 10px;
+}
+
+/* Style navigation links */
+nav a {
+    color: white; /* White text */
+    text-decoration: none; /* Remove underline */
+    margin-right: 10px; /* Add some margin between links */
+}
+
+/* Style the header section */
+header {
+    background-color: #007bff; /* Blue background color */
+    color: white; /* White text */
+    padding: 20px;
+    text-align: center; /* Center align text */
+}
+
+/* Add some margin around the content */
+.content {
+    margin: 20px;
+}
+
+/* Style forms */
+form {
+    margin-bottom: 20px; /* Add margin below forms */
+}
+
+/* Style text inputs and buttons */
+input[type="text"], button {
+    padding: 10px;
+    margin-right: 10px;
+}
+
+/* Style buttons */
+button {
+    background-color: #007bff; /* Blue background color */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    cursor: pointer; /* Change cursor to pointer */
+}
+
+/* Change button color on hover */
+button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Style unordered lists */
+ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0; /* Remove default padding */
+}
+
+/* Add some margin below list items */
+li {
+    margin-bottom: 10px;
+}
