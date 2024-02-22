@@ -2,6 +2,8 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/Homework3-Message_Bank/index.html",
+      "/posts/Homework #3 - Message Bank/index.html",
       "/posts/Homework #2 - Scrapy/index.html",
       "/posts/Palmer Penguins/index.html",
       "/posts/welcome/index.html"
