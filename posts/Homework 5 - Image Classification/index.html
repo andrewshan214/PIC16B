@@ -195,7 +195,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The url for the github repo is: https://github.com/andrewshan214/PIC16B</p>
 <p>In this blog post, I will be giving a short tutorial on how to implement an image classification model to distinguish between photos of dogs and cats.</p>
 <p>First, we import the proper packages in Python to develop our model. (See below)</p>
-<div id="cell-2" class="cell" data-execution_count="2">
+<div id="cell-2" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"KERAS_BACKEND"</span>] <span class="op">=</span> <span class="st">"tensorflow"</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> keras</span>
@@ -206,7 +206,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="creating-the-dataset" class="level1">
 <h1>Creating the dataset</h1>
 <p>Below is code that is used to create datasets for training, validation, and testing.</p>
-<div id="cell-4" class="cell" data-execution_count="3">
+<div id="cell-4" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>train_ds, validation_ds, test_ds <span class="op">=</span> tfds.load(</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cats_vs_dogs"</span>,</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 40% for training, 10% for validation, and 10% for test (the rest unused)</span></span>
@@ -227,14 +227,14 @@ Number of test samples: 2326</code></pre>
 <section id="resizing-the-images" class="level1">
 <h1>Resizing the images</h1>
 <p>Below, we write code to resize all of the images to a standard size of (150, 150), as well as to rapidly read data by altering the batch_size to 64.</p>
-<div id="cell-6" class="cell" data-execution_count="4">
+<div id="cell-6" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>resize_fn <span class="op">=</span> keras.layers.Resizing(<span class="dv">150</span>, <span class="dv">150</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>train_ds <span class="op">=</span> train_ds.<span class="bu">map</span>(<span class="kw">lambda</span> x, y: (resize_fn(x), y))</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>validation_ds <span class="op">=</span> validation_ds.<span class="bu">map</span>(<span class="kw">lambda</span> x, y: (resize_fn(x), y))</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>test_ds <span class="op">=</span> test_ds.<span class="bu">map</span>(<span class="kw">lambda</span> x, y: (resize_fn(x), y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-7" class="cell" data-execution_count="5">
+<div id="cell-7" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow <span class="im">import</span> data <span class="im">as</span> tf_data</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>batch_size <span class="op">=</span> <span class="dv">64</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -247,7 +247,7 @@ Number of test samples: 2326</code></pre>
 <h1>Visualizing the dataset</h1>
 <p>Below, I have implemented a function called visualize_dataset) that creates two lists, and adds 3 random images of dogs and cats in each, respectively. i use the “take” method to get images of each animal from the dataset to fill the lists.</p>
 <p>Then I iterate through the lists to create a plot that displays 3 random cats in the first row and 3 random dogs in the second row, using the pyplot library.</p>
-<div id="cell-9" class="cell" data-execution_count="6">
+<div id="cell-9" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -284,7 +284,7 @@ Number of test samples: 2326</code></pre>
 <span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>visualize_dataset(train_ds, title<span class="op">=</span><span class="st">"Random Samples from Training Dataset"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>2024-03-03 12:21:06.115788: W tensorflow/core/kernels/data/cache_dataset_ops.cc:858] The calling iterator did not fully read the dataset being cached. In order to avoid unexpected truncation of the dataset, the partially cached contents of the dataset  will be discarded. This can happen if you have an input pipeline similar to `dataset.cache().take(k).repeat()`. You should use `dataset.take(k).cache().repeat()` instead.</code></pre>
+<pre><code>2024-03-11 15:24:34.212439: W tensorflow/core/kernels/data/cache_dataset_ops.cc:858] The calling iterator did not fully read the dataset being cached. In order to avoid unexpected truncation of the dataset, the partially cached contents of the dataset  will be discarded. This can happen if you have an input pipeline similar to `dataset.cache().take(k).repeat()`. You should use `dataset.take(k).cache().repeat()` instead.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -298,7 +298,7 @@ Number of test samples: 2326</code></pre>
 <section id="checking-label-frequencies" class="level1">
 <h1>Checking Label Frequencies</h1>
 <p>Below, we’ve created an iterator that can go through the dataset, which we’ve used to count the total number of images of both cats and dogs by using a simple for loop.</p>
-<div id="cell-11" class="cell" data-execution_count="7">
+<div id="cell-11" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>labels_iterator<span class="op">=</span> train_ds.unbatch().<span class="bu">map</span>(<span class="kw">lambda</span> image, label: label).as_numpy_iterator()</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>cat_count <span class="op">=</span> <span class="dv">0</span></span>
@@ -323,7 +323,7 @@ Number of images with label 1 (dog): 4668</code></pre>
 <h1>Creating model1</h1>
 <p>Below we implemented our first model, which includes different layers to the model. Each layer processes a bit of the input data and produces an output. Each layer consists of a set of neurons that perform specific computation on the input data.</p>
 <p>After implementing the layers into model1, we compile and fit the model to evaluate the test and validation accuracy.</p>
-<div id="cell-13" class="cell" data-execution_count="16">
+<div id="cell-13" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras <span class="im">import</span> layers</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -353,91 +353,57 @@ Number of images with label 1 (dog): 4668</code></pre>
 <span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="co">#                       validation_data=validation_ds.batch(batch_size))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Epoch 1/20
-146/146 [==============================] - 283s 2s/step - loss: 17.6962 - accuracy: 0.5540 - val_loss: 0.6798 - val_accuracy: 0.5598
+146/146 [==============================] - 399s 3s/step - loss: 8.8767 - accuracy: 0.5283 - val_loss: 0.6919 - val_accuracy: 0.5155
 Epoch 2/20
-146/146 [==============================] - 291s 2s/step - loss: 0.6720 - accuracy: 0.5896 - val_loss: 0.6715 - val_accuracy: 0.5791
+146/146 [==============================] - 349s 2s/step - loss: 0.6885 - accuracy: 0.5395 - val_loss: 0.6833 - val_accuracy: 0.5464
 Epoch 3/20
-146/146 [==============================] - 291s 2s/step - loss: 0.6672 - accuracy: 0.5975 - val_loss: 0.6627 - val_accuracy: 0.6045
+146/146 [==============================] - 324s 2s/step - loss: 0.6826 - accuracy: 0.5575 - val_loss: 0.6810 - val_accuracy: 0.5559
 Epoch 4/20
-146/146 [==============================] - 294s 2s/step - loss: 0.6210 - accuracy: 0.6550 - val_loss: 0.6536 - val_accuracy: 0.6255
+146/146 [==============================] - 343s 2s/step - loss: 0.6745 - accuracy: 0.5702 - val_loss: 0.6919 - val_accuracy: 0.5408
 Epoch 5/20
-146/146 [==============================] - 296s 2s/step - loss: 0.6162 - accuracy: 0.6638 - val_loss: 0.6995 - val_accuracy: 0.5967
+146/146 [==============================] - 345s 2s/step - loss: 0.6772 - accuracy: 0.5743 - val_loss: 0.7042 - val_accuracy: 0.5288
 Epoch 6/20
-146/146 [==============================] - 290s 2s/step - loss: 0.6068 - accuracy: 0.6795 - val_loss: 0.8730 - val_accuracy: 0.5477
+146/146 [==============================] - 321s 2s/step - loss: 0.6589 - accuracy: 0.5832 - val_loss: 0.7062 - val_accuracy: 0.5322
 Epoch 7/20
-146/146 [==============================] - 295s 2s/step - loss: 0.5545 - accuracy: 0.7151 - val_loss: 0.7278 - val_accuracy: 0.5825
+146/146 [==============================] - 328s 2s/step - loss: 0.6491 - accuracy: 0.5918 - val_loss: 0.7230 - val_accuracy: 0.5245
 Epoch 8/20
-146/146 [==============================] - 296s 2s/step - loss: 0.5671 - accuracy: 0.7161 - val_loss: 0.8379 - val_accuracy: 0.6006
+146/146 [==============================] - 339s 2s/step - loss: 0.6336 - accuracy: 0.6121 - val_loss: 0.7309 - val_accuracy: 0.5258
 Epoch 9/20
-146/146 [==============================] - 299s 2s/step - loss: 0.4813 - accuracy: 0.7626 - val_loss: 0.7543 - val_accuracy: 0.6156
+146/146 [==============================] - 344s 2s/step - loss: 0.6014 - accuracy: 0.6326 - val_loss: 0.8717 - val_accuracy: 0.5404
 Epoch 10/20
-146/146 [==============================] - 342s 2s/step - loss: 0.4166 - accuracy: 0.8009 - val_loss: 0.8217 - val_accuracy: 0.6273
+146/146 [==============================] - 343s 2s/step - loss: 0.6273 - accuracy: 0.6451 - val_loss: 0.8127 - val_accuracy: 0.5357
 Epoch 11/20
-146/146 [==============================] - 329s 2s/step - loss: 0.3406 - accuracy: 0.8504 - val_loss: 0.8456 - val_accuracy: 0.6204
+146/146 [==============================] - 330s 2s/step - loss: 0.5895 - accuracy: 0.6431 - val_loss: 1.0035 - val_accuracy: 0.5245
 Epoch 12/20
-146/146 [==============================] - 301s 2s/step - loss: 0.3189 - accuracy: 0.8629 - val_loss: 0.8930 - val_accuracy: 0.6242
+146/146 [==============================] - 330s 2s/step - loss: 0.5629 - accuracy: 0.6614 - val_loss: 0.8088 - val_accuracy: 0.5279
 Epoch 13/20
-146/146 [==============================] - 297s 2s/step - loss: 0.2674 - accuracy: 0.8857 - val_loss: 1.0047 - val_accuracy: 0.6350
+146/146 [==============================] - 328s 2s/step - loss: 0.5538 - accuracy: 0.6700 - val_loss: 0.8364 - val_accuracy: 0.5340
 Epoch 14/20
-146/146 [==============================] - 301s 2s/step - loss: 0.2396 - accuracy: 0.9037 - val_loss: 1.0873 - val_accuracy: 0.6346
+146/146 [==============================] - 327s 2s/step - loss: 0.5187 - accuracy: 0.7004 - val_loss: 0.8670 - val_accuracy: 0.5426
 Epoch 15/20
-146/146 [==============================] - 306s 2s/step - loss: 0.2031 - accuracy: 0.9206 - val_loss: 1.2716 - val_accuracy: 0.6152
+146/146 [==============================] - 328s 2s/step - loss: 0.5398 - accuracy: 0.6886 - val_loss: 0.9341 - val_accuracy: 0.5421
 Epoch 16/20
-146/146 [==============================] - 305s 2s/step - loss: 0.1818 - accuracy: 0.9312 - val_loss: 1.2793 - val_accuracy: 0.6397
+146/146 [==============================] - 335s 2s/step - loss: 0.5129 - accuracy: 0.7042 - val_loss: 0.9088 - val_accuracy: 0.5404
 Epoch 17/20
-146/146 [==============================] - 311s 2s/step - loss: 0.1425 - accuracy: 0.9469 - val_loss: 1.5673 - val_accuracy: 0.6199
+146/146 [==============================] - 355s 2s/step - loss: 0.4887 - accuracy: 0.7217 - val_loss: 0.9090 - val_accuracy: 0.5563
 Epoch 18/20
-146/146 [==============================] - 306s 2s/step - loss: 0.1285 - accuracy: 0.9550 - val_loss: 1.5036 - val_accuracy: 0.6307
+146/146 [==============================] - 374s 3s/step - loss: 0.4769 - accuracy: 0.7309 - val_loss: 0.9431 - val_accuracy: 0.5533
 Epoch 19/20
-146/146 [==============================] - 305s 2s/step - loss: 0.1611 - accuracy: 0.9486 - val_loss: 1.5150 - val_accuracy: 0.6264
+146/146 [==============================] - 371s 3s/step - loss: 0.4518 - accuracy: 0.7566 - val_loss: 0.9338 - val_accuracy: 0.5550
 Epoch 20/20
-146/146 [==============================] - 300s 2s/step - loss: 0.0996 - accuracy: 0.9649 - val_loss: 1.7075 - val_accuracy: 0.6298</code></pre>
+146/146 [==============================] - 366s 3s/step - loss: 0.3941 - accuracy: 0.7881 - val_loss: 0.9704 - val_accuracy: 0.5602</code></pre>
 </div>
 </div>
 <p>Some things I experimented with was increasing the model complexity by adding more layers. Additionally, I tried to regularized the data to prevent overfitting.</p>
 <p><strong>The validation accuracy of my model stabilized between 62% and 63% during training, which is higher than the baseline.</strong></p>
 </section>
-<section id="model-with-data-augmentation" class="level1">
-<h1>Model with Data Augmentation</h1>
-<p>By augmenting the data, it allows the model to recognize images, even if they’re rotated or mirrored.</p>
-<p>The random flip layer is implemented, by randomly mirroring images, and initializing the layer to that.</p>
-<p>Similarly, the random rotation layer by randomly rotating the images, and training a layer to the random rotations.</p>
-<p>I’ve added before and after photos for the effect of both layers for visual aid. See code and images below.</p>
-<div id="cell-16" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#random_flip_layer</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Load a few sample images</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>sample_images <span class="op">=</span> []</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> image, label <span class="kw">in</span> train_ds.take(<span class="dv">1</span>):</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    sample_images <span class="op">=</span> image.numpy()[:<span class="dv">4</span>]  <span class="co"># Take the first three images</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize pixel values to the range [0, 1]</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>sample_images <span class="op">=</span> sample_images.astype(<span class="st">"float32"</span>) <span class="op">/</span> <span class="fl">255.0</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a RandomFlip layer</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>random_flip_layer <span class="op">=</span> tf.keras.layers.RandomFlip(<span class="st">"horizontal"</span>)</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply RandomFlip to the sample images</span></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>augmented_images <span class="op">=</span> random_flip_layer(sample_images)</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot original and augmented images</span></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">7</span>))</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">3</span>):</span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Original image</span></span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, i <span class="op">+</span> <span class="dv">1</span>)</span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    plt.imshow(sample_images[i])</span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">"Original"</span>)</span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">"off"</span>)</span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Augmented image</span></span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, i <span class="op">+</span> <span class="dv">4</span>)</span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>    plt.imshow(augmented_images[i])</span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">"Augmented"</span>)</span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">"off"</span>)</span>
-<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="visualizing-the-model-accuracy" class="level1">
+<h1>Visualizing the model accuracy</h1>
+<p>We use matplotlib.pyplot to visualize the history, as seen below:</p>
+<div id="cell-16" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>plt.plot(history.history[<span class="st">"accuracy"</span>])</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>plt.gca().<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"epoch"</span>, ylabel<span class="op">=</span><span class="st">"training accuracy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -446,38 +412,48 @@ Epoch 20/20
 </div>
 </div>
 </div>
-<div id="cell-17" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#RandomRotation layer</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>sample_images <span class="op">=</span> []</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> image, label <span class="kw">in</span> train_ds.take(<span class="dv">1</span>):</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    sample_images <span class="op">=</span> image.numpy()[:<span class="dv">3</span>]  <span class="co"># Take the first three images</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize pixel values to the range [0, 1]</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>sample_images <span class="op">=</span> sample_images.astype(<span class="st">"float32"</span>) <span class="op">/</span> <span class="fl">255.0</span></span>
+</section>
+<section id="model-with-data-augmentation" class="level1">
+<h1>Model with Data Augmentation</h1>
+<p>By augmenting the data, it allows the model to recognize images, even if they’re rotated or mirrored.</p>
+<p>The random flip layer is implemented, by randomly mirroring images, and initializing the layer to that.</p>
+<p>Similarly, the random rotation layer by randomly rotating the images, and training a layer to the random rotations.</p>
+<p>I’ve added before and after photos for the effect of both layers for visual aid. See code and images below.</p>
+<div id="cell-18" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#random_flip_layer</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Load a few sample images</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>sample_images <span class="op">=</span> []</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> image, label <span class="kw">in</span> train_ds.take(<span class="dv">1</span>):</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    sample_images <span class="op">=</span> image.numpy()[:<span class="dv">4</span>]  <span class="co"># Take the first three images</span></span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a RandomRotation layer</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>random_rotation_layer <span class="op">=</span> tf.keras.layers.RandomRotation(factor<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize pixel values to the range [0, 1]</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>sample_images <span class="op">=</span> sample_images.astype(<span class="st">"float32"</span>) <span class="op">/</span> <span class="fl">255.0</span></span>
 <span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply RandomRotation to the sample images</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>augmented_images <span class="op">=</span> random_rotation_layer(sample_images)</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a RandomFlip layer</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>random_flip_layer <span class="op">=</span> tf.keras.layers.RandomFlip(<span class="st">"horizontal"</span>)</span>
 <span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot original and augmented images</span></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">7</span>))</span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">3</span>):</span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Original image</span></span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, i <span class="op">+</span> <span class="dv">1</span>)</span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    plt.imshow(sample_images[i])</span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">"Original"</span>)</span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">"off"</span>)</span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Augmented image</span></span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, i <span class="op">+</span> <span class="dv">4</span>)</span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>    plt.imshow(augmented_images[i])</span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">"Augmented"</span>)</span>
-<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">"off"</span>)</span>
-<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply RandomFlip to the sample images</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>augmented_images <span class="op">=</span> random_flip_layer(sample_images)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot original and augmented images</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">7</span>))</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">3</span>):</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Original image</span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, i <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>    plt.imshow(sample_images[i])</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">"Original"</span>)</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Augmented image</span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, i <span class="op">+</span> <span class="dv">4</span>)</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>    plt.imshow(augmented_images[i])</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">"Augmented"</span>)</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -486,253 +462,334 @@ Epoch 20/20
 </div>
 </div>
 </div>
+<div id="cell-19" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#RandomRotation layer</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>sample_images <span class="op">=</span> []</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> image, label <span class="kw">in</span> train_ds.take(<span class="dv">1</span>):</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    sample_images <span class="op">=</span> image.numpy()[:<span class="dv">3</span>]  <span class="co"># Take the first three images</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize pixel values to the range [0, 1]</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>sample_images <span class="op">=</span> sample_images.astype(<span class="st">"float32"</span>) <span class="op">/</span> <span class="fl">255.0</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a RandomRotation layer</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>random_rotation_layer <span class="op">=</span> tf.keras.layers.RandomRotation(factor<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply RandomRotation to the sample images</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>augmented_images <span class="op">=</span> random_rotation_layer(sample_images)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot original and augmented images</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">7</span>))</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">3</span>):</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Original image</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, i <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    plt.imshow(sample_images[i])</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">"Original"</span>)</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Augmented image</span></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, i <span class="op">+</span> <span class="dv">4</span>)</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>    plt.imshow(augmented_images[i])</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">"Augmented"</span>)</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-11-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="model-2" class="level1">
 <h1>Model 2</h1>
 <p>After creating those two layers above, we include them in the second model (in addition to all the other layers from model1) to hopefully find a more accurate model. See code below.</p>
-<div id="cell-19" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#creating model2 with augmentation layers</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>model2 <span class="op">=</span> tf.keras.Sequential([</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.RandomFlip(<span class="st">"horizontal"</span>),</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.RandomRotation(factor<span class="op">=</span><span class="fl">0.2</span>),</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Conv2D(<span class="dv">32</span>, (<span class="dv">3</span>, <span class="dv">3</span>), activation<span class="op">=</span><span class="st">'relu'</span>, input_shape<span class="op">=</span>(<span class="dv">150</span>, <span class="dv">150</span>, <span class="dv">3</span>)),</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.MaxPooling2D(<span class="dv">2</span>, <span class="dv">2</span>),</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Conv2D(<span class="dv">64</span>, (<span class="dv">3</span>, <span class="dv">3</span>), activation<span class="op">=</span><span class="st">'relu'</span>),</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.MaxPooling2D(<span class="dv">2</span>, <span class="dv">2</span>),</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Flatten(),</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">128</span>, activation<span class="op">=</span><span class="st">'relu'</span>),</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dropout(<span class="fl">0.5</span>),</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">1</span>, activation<span class="op">=</span><span class="st">'sigmoid'</span>)</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>])</span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Compile model2</span></span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>model2.<span class="bu">compile</span>(optimizer<span class="op">=</span><span class="st">'adam'</span>,</span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>               loss<span class="op">=</span><span class="st">'binary_crossentropy'</span>,</span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>               metrics<span class="op">=</span>[<span class="st">'accuracy'</span>])</span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Train model2</span></span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>history2 <span class="op">=</span> model2.fit(train_ds, </span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>                      epochs<span class="op">=</span><span class="dv">20</span>, </span>
-<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>                      validation_data<span class="op">=</span>validation_ds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-21" class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#creating model2 with augmentation layers</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>model2 <span class="op">=</span> tf.keras.Sequential([</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.RandomFlip(<span class="st">"horizontal"</span>),</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.RandomRotation(factor<span class="op">=</span><span class="fl">0.2</span>),</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Conv2D(<span class="dv">32</span>, (<span class="dv">3</span>, <span class="dv">3</span>), activation<span class="op">=</span><span class="st">'relu'</span>, input_shape<span class="op">=</span>(<span class="dv">150</span>, <span class="dv">150</span>, <span class="dv">3</span>)),</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.MaxPooling2D(<span class="dv">2</span>, <span class="dv">2</span>),</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Conv2D(<span class="dv">64</span>, (<span class="dv">3</span>, <span class="dv">3</span>), activation<span class="op">=</span><span class="st">'relu'</span>),</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.MaxPooling2D(<span class="dv">2</span>, <span class="dv">2</span>),</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Flatten(),</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">128</span>, activation<span class="op">=</span><span class="st">'relu'</span>),</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dropout(<span class="fl">0.5</span>),</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">1</span>, activation<span class="op">=</span><span class="st">'sigmoid'</span>)</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Compile model2</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>model2.<span class="bu">compile</span>(optimizer<span class="op">=</span><span class="st">'adam'</span>,</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>               loss<span class="op">=</span><span class="st">'binary_crossentropy'</span>,</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>               metrics<span class="op">=</span>[<span class="st">'accuracy'</span>])</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Train model2</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>history2 <span class="op">=</span> model2.fit(train_ds, </span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>                      epochs<span class="op">=</span><span class="dv">20</span>, </span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>                      validation_data<span class="op">=</span>validation_ds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Epoch 1/20
-146/146 [==============================] - 56s 373ms/step - loss: 17.9894 - accuracy: 0.5400 - val_loss: 0.6882 - val_accuracy: 0.5447
+146/146 [==============================] - 64s 424ms/step - loss: 14.0102 - accuracy: 0.5652 - val_loss: 0.6646 - val_accuracy: 0.6028
 Epoch 2/20
-146/146 [==============================] - 66s 450ms/step - loss: 0.6894 - accuracy: 0.5455 - val_loss: 0.6840 - val_accuracy: 0.5550
+146/146 [==============================] - 73s 499ms/step - loss: 0.6700 - accuracy: 0.5996 - val_loss: 0.6511 - val_accuracy: 0.6277
 Epoch 3/20
-146/146 [==============================] - 60s 411ms/step - loss: 0.6889 - accuracy: 0.5579 - val_loss: 0.6804 - val_accuracy: 0.5632
+146/146 [==============================] - 73s 500ms/step - loss: 0.6526 - accuracy: 0.6272 - val_loss: 0.6448 - val_accuracy: 0.6427
 Epoch 4/20
-146/146 [==============================] - 59s 406ms/step - loss: 0.6851 - accuracy: 0.5569 - val_loss: 0.6800 - val_accuracy: 0.5804
+146/146 [==============================] - 74s 507ms/step - loss: 0.6405 - accuracy: 0.6420 - val_loss: 0.6272 - val_accuracy: 0.6711
 Epoch 5/20
-146/146 [==============================] - 60s 408ms/step - loss: 0.6884 - accuracy: 0.5558 - val_loss: 0.6779 - val_accuracy: 0.5843
+146/146 [==============================] - 73s 501ms/step - loss: 0.6301 - accuracy: 0.6495 - val_loss: 0.6133 - val_accuracy: 0.6883
 Epoch 6/20
-146/146 [==============================] - 60s 410ms/step - loss: 0.6798 - accuracy: 0.5736 - val_loss: 0.6717 - val_accuracy: 0.5976
+146/146 [==============================] - 74s 510ms/step - loss: 0.6266 - accuracy: 0.6462 - val_loss: 0.6142 - val_accuracy: 0.6776
 Epoch 7/20
-146/146 [==============================] - 61s 419ms/step - loss: 0.6747 - accuracy: 0.5880 - val_loss: 0.6637 - val_accuracy: 0.6234
+146/146 [==============================] - 77s 528ms/step - loss: 0.6211 - accuracy: 0.6627 - val_loss: 0.6052 - val_accuracy: 0.6879
 Epoch 8/20
-146/146 [==============================] - 62s 425ms/step - loss: 0.6691 - accuracy: 0.6066 - val_loss: 0.6600 - val_accuracy: 0.6234
+146/146 [==============================] - 77s 526ms/step - loss: 0.6068 - accuracy: 0.6754 - val_loss: 0.5935 - val_accuracy: 0.7064
 Epoch 9/20
-146/146 [==============================] - 63s 431ms/step - loss: 0.6644 - accuracy: 0.6130 - val_loss: 0.6640 - val_accuracy: 0.6199
+146/146 [==============================] - 77s 528ms/step - loss: 0.6003 - accuracy: 0.6833 - val_loss: 0.5868 - val_accuracy: 0.6935
 Epoch 10/20
-146/146 [==============================] - 63s 433ms/step - loss: 0.6588 - accuracy: 0.6204 - val_loss: 0.6472 - val_accuracy: 0.6328
+146/146 [==============================] - 74s 505ms/step - loss: 0.5975 - accuracy: 0.6876 - val_loss: 0.5812 - val_accuracy: 0.6900
 Epoch 11/20
-146/146 [==============================] - 62s 427ms/step - loss: 0.6514 - accuracy: 0.6333 - val_loss: 0.6410 - val_accuracy: 0.6316
+146/146 [==============================] - 74s 508ms/step - loss: 0.5929 - accuracy: 0.6910 - val_loss: 0.5637 - val_accuracy: 0.7034
 Epoch 12/20
-146/146 [==============================] - 63s 428ms/step - loss: 0.6463 - accuracy: 0.6409 - val_loss: 0.6355 - val_accuracy: 0.6500
+146/146 [==============================] - 72s 496ms/step - loss: 0.5835 - accuracy: 0.6937 - val_loss: 0.5592 - val_accuracy: 0.7240
 Epoch 13/20
-146/146 [==============================] - 63s 428ms/step - loss: 0.6472 - accuracy: 0.6273 - val_loss: 0.6369 - val_accuracy: 0.6406
+146/146 [==============================] - 72s 492ms/step - loss: 0.5918 - accuracy: 0.6905 - val_loss: 0.5864 - val_accuracy: 0.6943
 Epoch 14/20
-146/146 [==============================] - 63s 430ms/step - loss: 0.6478 - accuracy: 0.6248 - val_loss: 0.6326 - val_accuracy: 0.6449
+146/146 [==============================] - 75s 510ms/step - loss: 0.5700 - accuracy: 0.7091 - val_loss: 0.5613 - val_accuracy: 0.7283
 Epoch 15/20
-146/146 [==============================] - 63s 431ms/step - loss: 0.6383 - accuracy: 0.6478 - val_loss: 0.6307 - val_accuracy: 0.6449
+146/146 [==============================] - 70s 479ms/step - loss: 0.5692 - accuracy: 0.7075 - val_loss: 0.5369 - val_accuracy: 0.7369
 Epoch 16/20
-146/146 [==============================] - 63s 435ms/step - loss: 0.6344 - accuracy: 0.6483 - val_loss: 0.6382 - val_accuracy: 0.6397
+146/146 [==============================] - 72s 494ms/step - loss: 0.5681 - accuracy: 0.7055 - val_loss: 0.5673 - val_accuracy: 0.7193
 Epoch 17/20
-146/146 [==============================] - 63s 432ms/step - loss: 0.6364 - accuracy: 0.6494 - val_loss: 0.6437 - val_accuracy: 0.6380
+146/146 [==============================] - 70s 479ms/step - loss: 0.5588 - accuracy: 0.7099 - val_loss: 0.5414 - val_accuracy: 0.7334
 Epoch 18/20
-146/146 [==============================] - 63s 432ms/step - loss: 0.6383 - accuracy: 0.6438 - val_loss: 0.6352 - val_accuracy: 0.6449
+146/146 [==============================] - 71s 485ms/step - loss: 0.5510 - accuracy: 0.7207 - val_loss: 0.5134 - val_accuracy: 0.7459
 Epoch 19/20
-146/146 [==============================] - 63s 430ms/step - loss: 0.6352 - accuracy: 0.6446 - val_loss: 0.6253 - val_accuracy: 0.6595
+146/146 [==============================] - 74s 505ms/step - loss: 0.5360 - accuracy: 0.7313 - val_loss: 0.5164 - val_accuracy: 0.7567
 Epoch 20/20
-146/146 [==============================] - 64s 441ms/step - loss: 0.6278 - accuracy: 0.6562 - val_loss: 0.6234 - val_accuracy: 0.6488</code></pre>
+146/146 [==============================] - 73s 497ms/step - loss: 0.5382 - accuracy: 0.7312 - val_loss: 0.5260 - val_accuracy: 0.7468</code></pre>
 </div>
 </div>
 <p><strong>The accuracy of my model stabilized between 64% and 65% during training, which is a bit higher than in model1, and still higher than 60%.</strong></p>
 <p>In model2, if the accuracy stabilized around 64% to 65% during training and the validation accuracy closely tracked the training accuracy without diverging significantly, it indicates that the model may not be overfitting. Signs of overfitting include a large gap between training and validation accuracy or when the validation accuracy starts decreasing while the training accuracy continues to increase.</p>
+<p>As with model1, we will visualize our results.</p>
+<div id="cell-23" class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>plt.plot(history2.history[<span class="st">"accuracy"</span>])</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>plt.gca().<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"epoch"</span>, ylabel<span class="op">=</span><span class="st">"training accuracy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-13-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="model-3" class="level1">
 <h1>Model 3</h1>
 <p>We implemented model 3 hoping to make training the model faster by implemented a preprocessor layer that would handle the scaling of the RGB values prior to the training process. This allows the computer to focus more energy on handling actual signal in the data and less energy having the weights adjust to the data scale.</p>
-<div id="cell-22" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> keras.Input(shape<span class="op">=</span>(<span class="dv">150</span>, <span class="dv">150</span>, <span class="dv">3</span>))</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The pixel values have the range of (0, 255), but many models will work better if rescaled to (-1, 1.)</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># outputs: `(inputs * scale) + offset`</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>scale_layer <span class="op">=</span> keras.layers.Rescaling(scale<span class="op">=</span><span class="dv">1</span> <span class="op">/</span> <span class="fl">127.5</span>, offset<span class="op">=-</span><span class="dv">1</span>)</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> scale_layer(i)</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>preprocessor <span class="op">=</span> keras.Model(inputs <span class="op">=</span> [i], outputs <span class="op">=</span> [x])</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>model3 <span class="op">=</span> tf.keras.Sequential([</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    preprocessor,</span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.RandomFlip(<span class="st">"horizontal"</span>),</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.RandomRotation(factor<span class="op">=</span><span class="fl">0.2</span>),</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Conv2D(<span class="dv">32</span>, (<span class="dv">3</span>, <span class="dv">3</span>), activation<span class="op">=</span><span class="st">'relu'</span>),</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.MaxPooling2D(<span class="dv">2</span>, <span class="dv">2</span>),</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Conv2D(<span class="dv">64</span>, (<span class="dv">3</span>, <span class="dv">3</span>), activation<span class="op">=</span><span class="st">'relu'</span>),</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.MaxPooling2D(<span class="dv">2</span>, <span class="dv">2</span>),</span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Flatten(),</span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">128</span>, activation<span class="op">=</span><span class="st">'relu'</span>),</span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dropout(<span class="fl">0.5</span>),</span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">1</span>, activation<span class="op">=</span><span class="st">'sigmoid'</span>)</span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>])</span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Compile model3</span></span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>model3.<span class="bu">compile</span>(optimizer<span class="op">=</span><span class="st">'adam'</span>,</span>
-<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>               loss<span class="op">=</span><span class="st">'binary_crossentropy'</span>,</span>
-<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>               metrics<span class="op">=</span>[<span class="st">'accuracy'</span>])</span>
-<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>history3 <span class="op">=</span> model3.fit(train_ds, </span>
-<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>                      epochs<span class="op">=</span><span class="dv">20</span>,  <span class="co"># Increase the number of epochs</span></span>
-<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>                      validation_data<span class="op">=</span>validation_ds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-25" class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> keras.Input(shape<span class="op">=</span>(<span class="dv">150</span>, <span class="dv">150</span>, <span class="dv">3</span>))</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The pixel values have the range of (0, 255), but many models will work better if rescaled to (-1, 1.)</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># outputs: `(inputs * scale) + offset`</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>scale_layer <span class="op">=</span> keras.layers.Rescaling(scale<span class="op">=</span><span class="dv">1</span> <span class="op">/</span> <span class="fl">127.5</span>, offset<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> scale_layer(i)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>preprocessor <span class="op">=</span> keras.Model(inputs <span class="op">=</span> [i], outputs <span class="op">=</span> [x])</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>model3 <span class="op">=</span> tf.keras.Sequential([</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    preprocessor,</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.RandomFlip(<span class="st">"horizontal"</span>),</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.RandomRotation(factor<span class="op">=</span><span class="fl">0.2</span>),</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Conv2D(<span class="dv">32</span>, (<span class="dv">3</span>, <span class="dv">3</span>), activation<span class="op">=</span><span class="st">'relu'</span>),</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.MaxPooling2D(<span class="dv">2</span>, <span class="dv">2</span>),</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Conv2D(<span class="dv">64</span>, (<span class="dv">3</span>, <span class="dv">3</span>), activation<span class="op">=</span><span class="st">'relu'</span>),</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.MaxPooling2D(<span class="dv">2</span>, <span class="dv">2</span>),</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Flatten(),</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">128</span>, activation<span class="op">=</span><span class="st">'relu'</span>),</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dropout(<span class="fl">0.5</span>),</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">1</span>, activation<span class="op">=</span><span class="st">'sigmoid'</span>)</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Compile model3</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>model3.<span class="bu">compile</span>(optimizer<span class="op">=</span><span class="st">'adam'</span>,</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>               loss<span class="op">=</span><span class="st">'binary_crossentropy'</span>,</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>               metrics<span class="op">=</span>[<span class="st">'accuracy'</span>])</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>history3 <span class="op">=</span> model3.fit(train_ds, </span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>                      epochs<span class="op">=</span><span class="dv">20</span>,  <span class="co"># Increase the number of epochs</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>                      validation_data<span class="op">=</span>validation_ds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Epoch 1/20
-146/146 [==============================] - 58s 390ms/step - loss: 0.7738 - accuracy: 0.5551 - val_loss: 0.6511 - val_accuracy: 0.6393
+146/146 [==============================] - 67s 456ms/step - loss: 0.7266 - accuracy: 0.5728 - val_loss: 0.6305 - val_accuracy: 0.6664
 Epoch 2/20
-146/146 [==============================] - 60s 409ms/step - loss: 0.6275 - accuracy: 0.6425 - val_loss: 0.5943 - val_accuracy: 0.6866
+146/146 [==============================] - 69s 470ms/step - loss: 0.6211 - accuracy: 0.6585 - val_loss: 0.5609 - val_accuracy: 0.7223
 Epoch 3/20
-146/146 [==============================] - 58s 398ms/step - loss: 0.5989 - accuracy: 0.6745 - val_loss: 0.5707 - val_accuracy: 0.6960
+146/146 [==============================] - 66s 451ms/step - loss: 0.5794 - accuracy: 0.6969 - val_loss: 0.5290 - val_accuracy: 0.7442
 Epoch 4/20
-146/146 [==============================] - 59s 403ms/step - loss: 0.5784 - accuracy: 0.6952 - val_loss: 0.5492 - val_accuracy: 0.7287
+146/146 [==============================] - 65s 443ms/step - loss: 0.5574 - accuracy: 0.7180 - val_loss: 0.5131 - val_accuracy: 0.7528
 Epoch 5/20
-146/146 [==============================] - 60s 411ms/step - loss: 0.5602 - accuracy: 0.7123 - val_loss: 0.5171 - val_accuracy: 0.7425
+146/146 [==============================] - 66s 449ms/step - loss: 0.5419 - accuracy: 0.7316 - val_loss: 0.5037 - val_accuracy: 0.7571
 Epoch 6/20
-146/146 [==============================] - 61s 418ms/step - loss: 0.5501 - accuracy: 0.7190 - val_loss: 0.5064 - val_accuracy: 0.7541
+146/146 [==============================] - 65s 448ms/step - loss: 0.5307 - accuracy: 0.7329 - val_loss: 0.4927 - val_accuracy: 0.7623
 Epoch 7/20
-146/146 [==============================] - 63s 433ms/step - loss: 0.5335 - accuracy: 0.7339 - val_loss: 0.4927 - val_accuracy: 0.7549
+146/146 [==============================] - 72s 494ms/step - loss: 0.5173 - accuracy: 0.7459 - val_loss: 0.4771 - val_accuracy: 0.7678
 Epoch 8/20
-146/146 [==============================] - 62s 421ms/step - loss: 0.5183 - accuracy: 0.7439 - val_loss: 0.4791 - val_accuracy: 0.7691
+146/146 [==============================] - 69s 471ms/step - loss: 0.5063 - accuracy: 0.7536 - val_loss: 0.4839 - val_accuracy: 0.7704
 Epoch 9/20
-146/146 [==============================] - 62s 426ms/step - loss: 0.5152 - accuracy: 0.7479 - val_loss: 0.4972 - val_accuracy: 0.7618
+146/146 [==============================] - 67s 459ms/step - loss: 0.5076 - accuracy: 0.7545 - val_loss: 0.4746 - val_accuracy: 0.7760
 Epoch 10/20
-146/146 [==============================] - 62s 423ms/step - loss: 0.4971 - accuracy: 0.7628 - val_loss: 0.4790 - val_accuracy: 0.7782
+146/146 [==============================] - 64s 440ms/step - loss: 0.4912 - accuracy: 0.7695 - val_loss: 0.4892 - val_accuracy: 0.7713
 Epoch 11/20
-146/146 [==============================] - 66s 451ms/step - loss: 0.4929 - accuracy: 0.7599 - val_loss: 0.4588 - val_accuracy: 0.7790
+146/146 [==============================] - 65s 447ms/step - loss: 0.4854 - accuracy: 0.7668 - val_loss: 0.4462 - val_accuracy: 0.7954
 Epoch 12/20
-146/146 [==============================] - 64s 441ms/step - loss: 0.4834 - accuracy: 0.7679 - val_loss: 0.4733 - val_accuracy: 0.7777
+146/146 [==============================] - 64s 440ms/step - loss: 0.4799 - accuracy: 0.7710 - val_loss: 0.4689 - val_accuracy: 0.7846
 Epoch 13/20
-146/146 [==============================] - 62s 423ms/step - loss: 0.4886 - accuracy: 0.7671 - val_loss: 0.4708 - val_accuracy: 0.7825
+146/146 [==============================] - 66s 455ms/step - loss: 0.4724 - accuracy: 0.7740 - val_loss: 0.4539 - val_accuracy: 0.7975
 Epoch 14/20
-146/146 [==============================] - 62s 423ms/step - loss: 0.4726 - accuracy: 0.7733 - val_loss: 0.4714 - val_accuracy: 0.7842
+146/146 [==============================] - 65s 443ms/step - loss: 0.4642 - accuracy: 0.7810 - val_loss: 0.4534 - val_accuracy: 0.7962
 Epoch 15/20
-146/146 [==============================] - 63s 429ms/step - loss: 0.4665 - accuracy: 0.7833 - val_loss: 0.4810 - val_accuracy: 0.7893
+146/146 [==============================] - 65s 445ms/step - loss: 0.4613 - accuracy: 0.7825 - val_loss: 0.4515 - val_accuracy: 0.8014
 Epoch 16/20
-146/146 [==============================] - 69s 471ms/step - loss: 0.4728 - accuracy: 0.7761 - val_loss: 0.4626 - val_accuracy: 0.7889
+146/146 [==============================] - 64s 435ms/step - loss: 0.4512 - accuracy: 0.7828 - val_loss: 0.4683 - val_accuracy: 0.7829
 Epoch 17/20
-146/146 [==============================] - 85s 584ms/step - loss: 0.4609 - accuracy: 0.7793 - val_loss: 0.4543 - val_accuracy: 0.7863
+146/146 [==============================] - 64s 440ms/step - loss: 0.4552 - accuracy: 0.7875 - val_loss: 0.4413 - val_accuracy: 0.7979
 Epoch 18/20
-146/146 [==============================] - 65s 445ms/step - loss: 0.4562 - accuracy: 0.7909 - val_loss: 0.4706 - val_accuracy: 0.7893
+146/146 [==============================] - 66s 452ms/step - loss: 0.4485 - accuracy: 0.7940 - val_loss: 0.4312 - val_accuracy: 0.8083
 Epoch 19/20
-146/146 [==============================] - 64s 439ms/step - loss: 0.4477 - accuracy: 0.7922 - val_loss: 0.4594 - val_accuracy: 0.7945
+146/146 [==============================] - 71s 483ms/step - loss: 0.4311 - accuracy: 0.8032 - val_loss: 0.4197 - val_accuracy: 0.8156
 Epoch 20/20
-146/146 [==============================] - 64s 440ms/step - loss: 0.4453 - accuracy: 0.7956 - val_loss: 0.4593 - val_accuracy: 0.7945</code></pre>
+146/146 [==============================] - 69s 473ms/step - loss: 0.4303 - accuracy: 0.8077 - val_loss: 0.4345 - val_accuracy: 0.8113</code></pre>
 </div>
 </div>
 <p><strong>The validation accuracy stabilized between 80% and 82% during training</strong> This is much higher than the val_accuracy of model1, which was ~60%.</p>
 <p>Since there is not a significant gap between the training and validation accuracy, it suggests that model3 is not overfitting the data.</p>
 </section>
+<section id="visualizing-model3-results" class="level1">
+<h1>Visualizing model3 results</h1>
+<p>We will once again visualize these results.</p>
+<div id="cell-28" class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>plt.plot(history3.history[<span class="st">"accuracy"</span>])</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>plt.gca().<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"epoch"</span>, ylabel<span class="op">=</span><span class="st">"training accuracy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-15-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
 <section id="transfer-learning" class="level1">
 <h1>Transfer Learning</h1>
 <p>Transfer learning is essentially accessing a pre-existing base model and incorporating it into our own model. The first few lines of the code below is downloading MobileNetV3Large, which will serve as our base model. We create a base_model_layer that we implement into our model4, which is constructed in the same manner as the previous 3 models.</p>
-<div id="cell-25" class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>IMG_SHAPE <span class="op">=</span> (<span class="dv">150</span>, <span class="dv">150</span>, <span class="dv">3</span>)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>base_model <span class="op">=</span> keras.applications.MobileNetV3Large(input_shape<span class="op">=</span>IMG_SHAPE,</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>                                               include_top<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>                                               weights<span class="op">=</span><span class="va">None</span>)</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>weights_path <span class="op">=</span> <span class="st">"/Users/andrewhan/Desktop/2023-2024/Winter_24/PIC_Class/Homework/HW5/weights_mobilenet_v3_large_224_1.0_float_no_top_v2.h5"</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>base_model.load_weights(weights_path)</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>base_model.trainable <span class="op">=</span> <span class="va">False</span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> keras.Input(shape<span class="op">=</span>IMG_SHAPE)</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> base_model(i, training <span class="op">=</span> <span class="va">False</span>)</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>base_model_layer <span class="op">=</span> keras.Model(inputs <span class="op">=</span> i, outputs <span class="op">=</span> x)</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>data_augmentation <span class="op">=</span> tf.keras.Sequential([</span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.RandomFlip(<span class="st">"horizontal"</span>),</span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.RandomRotation(factor<span class="op">=</span><span class="fl">0.2</span>)</span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>])</span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>model4 <span class="op">=</span> tf.keras.Sequential([</span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>    data_augmentation,</span>
-<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    base_model,</span>
-<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.GlobalAveragePooling2D(),</span>
-<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">2</span>, activation<span class="op">=</span><span class="st">'softmax'</span>)  </span>
-<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>])</span>
-<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>model4.<span class="bu">compile</span>(optimizer<span class="op">=</span><span class="st">'adam'</span>,</span>
-<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>               loss<span class="op">=</span><span class="st">'sparse_categorical_crossentropy'</span>,</span>
-<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>               metrics<span class="op">=</span>[<span class="st">'accuracy'</span>])</span>
-<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>history4 <span class="op">=</span> model4.fit(train_ds, </span>
-<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>                      epochs<span class="op">=</span><span class="dv">20</span>,  <span class="co"># Increase the number of epochs</span></span>
-<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>                      validation_data<span class="op">=</span>validation_ds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-30" class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>IMG_SHAPE <span class="op">=</span> (<span class="dv">150</span>, <span class="dv">150</span>, <span class="dv">3</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>base_model <span class="op">=</span> keras.applications.MobileNetV3Large(input_shape<span class="op">=</span>IMG_SHAPE,</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>                                               include_top<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>                                               weights<span class="op">=</span><span class="va">None</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>weights_path <span class="op">=</span> <span class="st">'/Users/andrewhan/PIC16B/posts/Homework 5 - Image Classification/weights_mobilenet_v3_large_224_1.0_float_no_top_v2.h5'</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>base_model.load_weights(weights_path)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>base_model.trainable <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> keras.Input(shape<span class="op">=</span>IMG_SHAPE)</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> base_model(i, training <span class="op">=</span> <span class="va">False</span>)</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>base_model_layer <span class="op">=</span> keras.Model(inputs <span class="op">=</span> i, outputs <span class="op">=</span> x)</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>data_augmentation <span class="op">=</span> tf.keras.Sequential([</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.RandomFlip(<span class="st">"horizontal"</span>),</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.RandomRotation(factor<span class="op">=</span><span class="fl">0.2</span>)</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>model4 <span class="op">=</span> tf.keras.Sequential([</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>    data_augmentation,</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>    base_model,</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.GlobalAveragePooling2D(),</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">2</span>, activation<span class="op">=</span><span class="st">'softmax'</span>)  </span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>model4.<span class="bu">compile</span>(optimizer<span class="op">=</span><span class="st">'adam'</span>,</span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>               loss<span class="op">=</span><span class="st">'sparse_categorical_crossentropy'</span>,</span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>               metrics<span class="op">=</span>[<span class="st">'accuracy'</span>])</span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>history4 <span class="op">=</span> model4.fit(train_ds, </span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>                      epochs<span class="op">=</span><span class="dv">20</span>,  <span class="co"># Increase the number of epochs</span></span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a>                      validation_data<span class="op">=</span>validation_ds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Epoch 1/20
-146/146 [==============================] - 41s 261ms/step - loss: 0.2308 - accuracy: 0.9044 - val_loss: 0.1066 - val_accuracy: 0.9604
+146/146 [==============================] - 41s 262ms/step - loss: 0.2380 - accuracy: 0.8972 - val_loss: 0.0899 - val_accuracy: 0.9656
 Epoch 2/20
-146/146 [==============================] - 37s 255ms/step - loss: 0.1428 - accuracy: 0.9452 - val_loss: 0.0813 - val_accuracy: 0.9695
+146/146 [==============================] - 37s 253ms/step - loss: 0.1325 - accuracy: 0.9462 - val_loss: 0.0767 - val_accuracy: 0.9725
 Epoch 3/20
-146/146 [==============================] - 38s 261ms/step - loss: 0.1224 - accuracy: 0.9520 - val_loss: 0.0760 - val_accuracy: 0.9716
+146/146 [==============================] - 37s 256ms/step - loss: 0.1177 - accuracy: 0.9525 - val_loss: 0.0814 - val_accuracy: 0.9699
 Epoch 4/20
-146/146 [==============================] - 38s 263ms/step - loss: 0.1168 - accuracy: 0.9550 - val_loss: 0.0691 - val_accuracy: 0.9746
+146/146 [==============================] - 38s 259ms/step - loss: 0.1106 - accuracy: 0.9550 - val_loss: 0.0710 - val_accuracy: 0.9759
 Epoch 5/20
-146/146 [==============================] - 38s 263ms/step - loss: 0.1168 - accuracy: 0.9524 - val_loss: 0.0719 - val_accuracy: 0.9738
+146/146 [==============================] - 40s 273ms/step - loss: 0.1081 - accuracy: 0.9570 - val_loss: 0.0714 - val_accuracy: 0.9755
 Epoch 6/20
-146/146 [==============================] - 38s 263ms/step - loss: 0.1074 - accuracy: 0.9569 - val_loss: 0.0699 - val_accuracy: 0.9733
+146/146 [==============================] - 41s 280ms/step - loss: 0.1108 - accuracy: 0.9567 - val_loss: 0.0782 - val_accuracy: 0.9733
 Epoch 7/20
-146/146 [==============================] - 39s 268ms/step - loss: 0.0969 - accuracy: 0.9605 - val_loss: 0.0710 - val_accuracy: 0.9733
+146/146 [==============================] - 51s 350ms/step - loss: 0.1054 - accuracy: 0.9570 - val_loss: 0.0728 - val_accuracy: 0.9738
 Epoch 8/20
-146/146 [==============================] - 39s 266ms/step - loss: 0.0996 - accuracy: 0.9600 - val_loss: 0.0681 - val_accuracy: 0.9768
+146/146 [==============================] - 45s 308ms/step - loss: 0.1033 - accuracy: 0.9595 - val_loss: 0.0708 - val_accuracy: 0.9746
 Epoch 9/20
-146/146 [==============================] - 40s 272ms/step - loss: 0.0987 - accuracy: 0.9607 - val_loss: 0.0674 - val_accuracy: 0.9751
+146/146 [==============================] - 42s 287ms/step - loss: 0.0892 - accuracy: 0.9632 - val_loss: 0.0670 - val_accuracy: 0.9772
 Epoch 10/20
-146/146 [==============================] - 40s 273ms/step - loss: 0.0940 - accuracy: 0.9627 - val_loss: 0.0655 - val_accuracy: 0.9794
+146/146 [==============================] - 41s 281ms/step - loss: 0.0995 - accuracy: 0.9594 - val_loss: 0.0642 - val_accuracy: 0.9781
 Epoch 11/20
-146/146 [==============================] - 41s 281ms/step - loss: 0.1008 - accuracy: 0.9586 - val_loss: 0.0677 - val_accuracy: 0.9768
+146/146 [==============================] - 41s 279ms/step - loss: 0.0935 - accuracy: 0.9623 - val_loss: 0.0660 - val_accuracy: 0.9768
 Epoch 12/20
-146/146 [==============================] - 42s 291ms/step - loss: 0.0967 - accuracy: 0.9598 - val_loss: 0.0639 - val_accuracy: 0.9764
+146/146 [==============================] - 41s 278ms/step - loss: 0.0931 - accuracy: 0.9637 - val_loss: 0.0701 - val_accuracy: 0.9755
 Epoch 13/20
-146/146 [==============================] - 40s 274ms/step - loss: 0.0938 - accuracy: 0.9634 - val_loss: 0.0768 - val_accuracy: 0.9733
+146/146 [==============================] - 42s 284ms/step - loss: 0.0975 - accuracy: 0.9611 - val_loss: 0.0644 - val_accuracy: 0.9772
 Epoch 14/20
-146/146 [==============================] - 40s 271ms/step - loss: 0.0943 - accuracy: 0.9638 - val_loss: 0.0666 - val_accuracy: 0.9751
+146/146 [==============================] - 40s 274ms/step - loss: 0.0879 - accuracy: 0.9657 - val_loss: 0.0729 - val_accuracy: 0.9738
 Epoch 15/20
-146/146 [==============================] - 40s 271ms/step - loss: 0.0927 - accuracy: 0.9623 - val_loss: 0.0692 - val_accuracy: 0.9759
+146/146 [==============================] - 41s 279ms/step - loss: 0.0938 - accuracy: 0.9626 - val_loss: 0.0666 - val_accuracy: 0.9772
 Epoch 16/20
-146/146 [==============================] - 39s 270ms/step - loss: 0.0968 - accuracy: 0.9612 - val_loss: 0.0664 - val_accuracy: 0.9751
+146/146 [==============================] - 41s 280ms/step - loss: 0.0884 - accuracy: 0.9661 - val_loss: 0.0727 - val_accuracy: 0.9738
 Epoch 17/20
-146/146 [==============================] - 39s 268ms/step - loss: 0.0923 - accuracy: 0.9634 - val_loss: 0.0656 - val_accuracy: 0.9764
+146/146 [==============================] - 41s 282ms/step - loss: 0.0954 - accuracy: 0.9607 - val_loss: 0.0687 - val_accuracy: 0.9768
 Epoch 18/20
-146/146 [==============================] - 39s 270ms/step - loss: 0.0876 - accuracy: 0.9646 - val_loss: 0.0649 - val_accuracy: 0.9776
+146/146 [==============================] - 40s 274ms/step - loss: 0.0920 - accuracy: 0.9622 - val_loss: 0.0729 - val_accuracy: 0.9738
 Epoch 19/20
-146/146 [==============================] - 39s 268ms/step - loss: 0.0853 - accuracy: 0.9661 - val_loss: 0.0643 - val_accuracy: 0.9776
+146/146 [==============================] - 40s 272ms/step - loss: 0.0941 - accuracy: 0.9629 - val_loss: 0.0711 - val_accuracy: 0.9755
 Epoch 20/20
-146/146 [==============================] - 41s 278ms/step - loss: 0.0887 - accuracy: 0.9639 - val_loss: 0.0676 - val_accuracy: 0.9759</code></pre>
+146/146 [==============================] - 41s 277ms/step - loss: 0.0918 - accuracy: 0.9612 - val_loss: 0.0701 - val_accuracy: 0.9764</code></pre>
 </div>
 </div>
 <p><strong>The model4 validation accuracy stabilzed between 97% and 98%, which is greater than the required 93%</strong> This val_accuracy is also much higher than from model1, which was around 60%.</p>
 <p>There does not seem to be any overfitting as there is not much difference between the test and validation accuracy.</p>
 </section>
+<section id="visualizing-the-results" class="level1">
+<h1>Visualizing the results</h1>
+<div id="cell-33" class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>plt.plot(history4.history[<span class="st">"accuracy"</span>])</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>plt.gca().<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"epoch"</span>, ylabel<span class="op">=</span><span class="st">"training accuracy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-17-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
 <section id="score-on-test-data" class="level1">
 <h1>Score on Test Data</h1>
 <p>This code below will evaluate the accuracy of model4, which is the most performant model of the four. This will evaluate the unseen test dataset and print the value it returns.</p>
-<div id="cell-28" class="cell" data-execution_count="71">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>test_loss, test_accuracy <span class="op">=</span> model4.evaluate(test_ds)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the test accuracy</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Test accuracy: </span><span class="sc">{</span>test_accuracy<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-35" class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>test_loss, test_accuracy <span class="op">=</span> model4.evaluate(test_ds)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the test accuracy</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Test accuracy: </span><span class="sc">{</span>test_accuracy<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>37/37 [==============================] - 8s 198ms/step - loss: 0.0733 - accuracy: 0.9729
-Test accuracy: 0.9729148745536804</code></pre>
+<pre><code>37/37 [==============================] - 8s 211ms/step - loss: 0.0784 - accuracy: 0.9742
+Test accuracy: 0.9742046594619751</code></pre>
 </div>
 </div>
 <p><strong>The test accuracy was over 97%, so we can see that the model works well.</strong> This suggests that the model has effectively learned to distinguish between cats and dogs in the test dataset.</p>
