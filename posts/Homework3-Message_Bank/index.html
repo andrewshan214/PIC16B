@@ -206,7 +206,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="going-through-app.py-file" class="level1">
 <h1>Going through app.py file</h1>
-<p>Along with importing the necessary libraries, we must define a few functions and databases for our message bank. Please see the comments above each function to understand what each function is doing in the context of the webpage.</p>
+<p>Along with importing the necessary libraries, we must define a few functions and databases for our message bank. We create a base page by simply rendering the accompanying base.html file.</p>
+<p>Please see the comments above each function to understand what each function is doing in the context of the webpage.</p>
 <div id="cell-4" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a sqlite3 database to handle all of the submitted messages</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>DATABASE <span class="op">=</span> <span class="st">'messages_db.sqlite'</span></span>
@@ -255,7 +256,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="base.html" class="level1">
 <h1>base.html</h1>
-<p>What this code is doing is both serving as a base for additional html files, as well as formatting the base page. It lays out a page title, as well as navigation functionality to visit other pages. We use Flask’s render_template function a lot in this program to render the accompanying HTML file.</p>
+<p>What this code is doing is both serving as a base for additional html files, as well as formatting the base page. It lays out a page title, as well as navigation functionality to visit other pages. We use Flask’s render_template function a lot in this program to render the accompanying HTML file. the submit message page is rendered using the below function, which renders the submit.html file and inserts a message if an input is received.</p>
 <p>See below for the app.py function that renders the message submission page, as well as the accompanying submit.html file.</p>
 <div id="cell-9" class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Like before, we use @app.route. </span></span>
@@ -312,6 +313,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="database-management" class="level1">
 <h1>Database Management</h1>
+<p>It connects to the global g object and creates a table for receiving messages with the name attached. The insert_messages function connects to that new table and inserts any messages received from the submit_messages page using a SQL query.</p>
 <p>See below for the code for inserting a message into the SQL message database.</p>
 <div id="cell-14" class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">'/getmsg/'</span>, methods<span class="op">=</span>[<span class="st">'GET'</span>])</span>
@@ -384,7 +386,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">'view.html'</span>, messages <span class="op">=</span> messages)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>These functions connect to the message database, executes a query to randomly select a message, to return and render a list of previously inputted, randomly selected messages to the user. See below for the view.html file.</p>
+<p>These functions connect to the message database, executes a query to randomly select a message, to return and render a list of previously inputted, randomly selected messages to the user.</p>
+<p>See below for the view.html file.</p>
 <div id="cell-19" class="cell" data-vscode="{&quot;languageId&quot;:&quot;html&quot;}">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>{<span class="op">%</span> extends <span class="st">"base.html"</span> <span class="op">%</span>}</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
