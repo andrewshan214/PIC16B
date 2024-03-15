@@ -247,10 +247,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;/</span>section<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
+<section id="html-explanation" class="level1">
+<h1>HTML explanation</h1>
+<p>HTML lines begin with ‘&lt; keyword&gt;’ to indicate the purpose of each line. The line &lt; link rel=“stylesheet” href=“{{ url_for(‘static’, filename=‘style.css’) }}”&gt; indicates to the program to link the entire page to the style.css sheet in the directory.</p>
+<p>&lt; nav&gt; initializes a navigation page, with the header PIC16B Message Bank! using &lt; h1 &gt; keyword. &lt; ul&gt; initializes an unordered list, while &lt; li&gt; is each individual list entry.</p>
+<p>&lt; section&gt; creates a new section, while each {% block} where the content of the page will be added.</p>
+</section>
 <section id="base.html" class="level1">
 <h1>base.html</h1>
-<p>What this code is doing is both serving as a base for additional html files, as well as formatting the base page. It lays out a page title, as well as navigation functionality to visit other pages. See below for the app.py function that renders the message submission page, as well as the accompanying submit.html file.</p>
-<div id="cell-8" class="cell">
+<p>What this code is doing is both serving as a base for additional html files, as well as formatting the base page. It lays out a page title, as well as navigation functionality to visit other pages. We use Flask’s render_template function a lot in this program to render the accompanying HTML file.</p>
+<p>See below for the app.py function that renders the message submission page, as well as the accompanying submit.html file.</p>
+<div id="cell-9" class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Like before, we use @app.route. </span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#However, now we must define the methods to ensure that user submission is possible by adding methods=['GET, POST']</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -270,7 +277,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span>:</span>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> render_template(<span class="st">'submit.html'</span>, error<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-9" class="cell" data-vscode="{&quot;languageId&quot;:&quot;html&quot;}">
+<div id="cell-10" class="cell" data-vscode="{&quot;languageId&quot;:&quot;html&quot;}">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>{<span class="op">%</span> extends <span class="st">"base.html"</span> <span class="op">%</span>} </span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>{<span class="op">%</span> block header <span class="op">%</span>}</span>
@@ -288,6 +295,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>{<span class="op">%</span> endblock <span class="op">%</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
+<section id="html-explanation-1" class="level1">
+<h1>HTML explanation</h1>
+<p>We extend base.html to adopt the style elements from style.css. We create a block titled ‘Submit Message’ to create a header for the page.</p>
+<p>Additionally, we create a new block with a form element to allow the website to take user input in the form of messages and handles. I create multiple input boxes to allow the user to input both the message and their name, as well as a button to submit (which calls the submit_message function)</p>
+</section>
 <section id="message-submission-page" class="level1">
 <h1>Message Submission Page</h1>
 <p>This page is run by the function submit_message(), which essentially receives a message from the user and renders the submit.html page. The submit.html file “extends” the base.html file, which essentially means that many components, like the style.css, is automatically transferred from the base.html file to submit.html. See below for a screenshot of this page.</p>
@@ -301,7 +313,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="database-management" class="level1">
 <h1>Database Management</h1>
 <p>See below for the code for inserting a message into the SQL message database.</p>
-<div id="cell-12" class="cell">
+<div id="cell-14" class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">'/getmsg/'</span>, methods<span class="op">=</span>[<span class="st">'GET'</span>])</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_message_db():</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -309,59 +321,71 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        db <span class="op">=</span> g.message_db</span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">AttributeError</span>:</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        db <span class="op">=</span> g.message_db <span class="op">=</span> sqlite3.<span class="ex">connect</span>(DATABASE)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        db.execute(<span class="st">'''</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="st">            CREATE TABLE IF NOT EXISTS messages (</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="st">                id INTEGER PRIMARY KEY,</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="st">                handle TEXT,</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="st">                message TEXT</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="st">            )</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="st">        '''</span>)</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> db</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">'/insert_msg/'</span>, methods<span class="op">=</span>[<span class="st">'POST'</span>])</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> insert_message(request):</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># get message and handle from request</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>        message <span class="op">=</span> request.form[<span class="st">'message'</span>]</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>        handle <span class="op">=</span> request.form[<span class="st">'name'</span>]</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>        db <span class="op">=</span> get_message_db()</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>        cursor <span class="op">=</span> db.cursor()</span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>        cursor.execute(<span class="st">"INSERT INTO messages (handle, message) VALUES (?, ?)"</span>, (handle, message))</span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>        db.commit()</span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> redirect(<span class="st">'/submit/'</span>)</span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> render_template(<span class="st">'submit.html'</span>, error<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="co">#if no database connection, connect to the database and call query to create a table called messages</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        db <span class="op">=</span> g.message_db <span class="op">=</span> sqlite3.<span class="ex">connect</span>(DATABASE)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        db.execute(<span class="st">'''</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="st">            CREATE TABLE IF NOT EXISTS messages (</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="st">                id INTEGER PRIMARY KEY,</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="st">                handle TEXT,</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="st">                message TEXT</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="st">            )</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="st">        '''</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> db</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">'/insert_msg/'</span>, methods<span class="op">=</span>[<span class="st">'POST'</span>])</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> insert_message(request):</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># get message and handle from request</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>        <span class="co"># access the user input from the HTML webpage</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>        message <span class="op">=</span> request.form[<span class="st">'message'</span>]</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>        handle <span class="op">=</span> request.form[<span class="st">'name'</span>]</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>        <span class="co">#connect to the SQL Database</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>        db <span class="op">=</span> get_message_db()</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>        cursor <span class="op">=</span> db.cursor()</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>        <span class="co">#execute query to insert the user input into the databse</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>        cursor.execute(<span class="st">"INSERT INTO messages (handle, message) VALUES (?, ?)"</span>, (handle, message))</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>        db.commit()</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>        <span class="co">#return a redirection back to the /submit page of the website</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> redirect(<span class="st">'/submit/'</span>)</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>    <span class="co">#exception if an error occurs</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> render_template(<span class="st">'submit.html'</span>, error<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="insert_messagerequest" class="level1">
 <h1>insert_message(request)</h1>
-<p>What this function does is connect to the message database and inserts the user-inputted message into the database so that it can be displayed in the message viewing page.</p>
+<p>What this function does is connect to the message database and inserts the user-inputted message into the database so that it can be displayed in the message viewing page. It connects to the database using sqlite3, and executes the query, which inserts a message into the database table.</p>
 <p>See below for how the message viewing page is run.</p>
 </section>
 <section id="random-messages-page" class="level1">
 <h1>Random Messages Page</h1>
-<div id="cell-15" class="cell">
+<div id="cell-17" class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#function to return a random message from the db</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">'/random_messages/&lt;int:n&gt;'</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> random_message(n):</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    db <span class="op">=</span> get_message_db()</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    cursor <span class="op">=</span> db.cursor()</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    cursor.execute(<span class="st">"SELECT * FROM messages ORDER BY RANDOM() LIMIT ?"</span>, (n,))</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    messages <span class="op">=</span> cursor.fetchall()</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">'view.html'</span>, messages<span class="op">=</span>messages)</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#renders the random messages page</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">'/random_messages/'</span>)</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> render_view_template():</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    messages <span class="op">=</span> random_message(<span class="dv">5</span>)</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">'view.html'</span>, messages <span class="op">=</span> messages)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">#connect to the SQL database</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    db <span class="op">=</span> get_message_db()</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    cursor <span class="op">=</span> db.cursor()</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">#run query to select a random list of messages</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    cursor.execute(<span class="st">"SELECT * FROM messages ORDER BY RANDOM() LIMIT ?"</span>, (n,))</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">#initialize messages to be all the random messages from the above query</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    messages <span class="op">=</span> cursor.fetchall()</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">#render the appropriate page with those messages</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">'view.html'</span>, messages<span class="op">=</span>messages)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#renders the random messages page</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">'/random_messages/'</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> render_view_template():</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">#display the first 5 messages</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    messages <span class="op">=</span> random_message(<span class="dv">5</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">'view.html'</span>, messages <span class="op">=</span> messages)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>These functions connect to the message database to return and render a list of previously inputted, randomly selected messages to the user. See below for the view.html file.</p>
-<div id="cell-17" class="cell" data-vscode="{&quot;languageId&quot;:&quot;html&quot;}">
+<p>These functions connect to the message database, executes a query to randomly select a message, to return and render a list of previously inputted, randomly selected messages to the user. See below for the view.html file.</p>
+<div id="cell-19" class="cell" data-vscode="{&quot;languageId&quot;:&quot;html&quot;}">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>{<span class="op">%</span> extends <span class="st">"base.html"</span> <span class="op">%</span>}</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>{<span class="op">%</span> block content <span class="op">%</span>}</span>
@@ -376,6 +400,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>{<span class="op">%</span> endblock <span class="op">%</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
+<section id="html-explanation-2" class="level1">
+<h1>HTML explanation</h1>
+<p>By extending “base.html”, we can adopt all of the style elements from base.html and style.css to all pages in the website.</p>
+<p>Again we create a block with the header “Random Messages”, which displays an unordered list of message handles and messages using a for loop.</p>
+</section>
 <section id="view.html" class="level1">
 <h1>view.html</h1>
 <p>This code also “extends” base.html. This html code is much simpler as it simply lists the previous messages, and doesn’t need to receive any information from the website user. See an example below.</p>
@@ -389,7 +418,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="style.css" class="level1">
 <h1>style.css</h1>
 <p>We have now seen how the website functions on the back-end with the database management and user inputs. However, this must all be presentable. As I mentioned earlier, the base.html file is accompanies by a style.css file. See below for the css code.</p>
-<div id="cell-20" class="cell" data-vscode="{&quot;languageId&quot;:&quot;html&quot;}">
+<div id="cell-23" class="cell" data-vscode="{&quot;languageId&quot;:&quot;html&quot;}">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="op">/*</span> Import a custom font <span class="im">from</span> Google Fonts <span class="op">*/</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="at">@import</span> url(<span class="st">'https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap'</span>)<span class="op">;</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -462,7 +491,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-70"><a href="#cb9-70" aria-hidden="true" tabindex="-1"></a>    margin<span class="op">-</span>bottom: <span class="dv">10</span><span class="er">px</span><span class="op">;</span></span>
 <span id="cb9-71"><a href="#cb9-71" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This code goes through many different customizations, such as font type, font size and color, page color, etc.</p>
+<p>This code goes through many different customizations, such as font type, font size and color, page color, etc. By using certain keyword for each customization, I am able to change how the styling of the HTML will be rendered.</p>
 </section>
 <section id="conclusion" class="level1">
 <h1>Conclusion</h1>
