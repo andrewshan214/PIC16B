@@ -195,7 +195,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The url for the github repo is: https://github.com/andrewshan214/PIC16B</p>
 <p>In this blog post, I will be giving a short tutorial on how to implement an image classification model to distinguish between photos of dogs and cats.</p>
 <p>First, we import the proper packages in Python to develop our model. (See below)</p>
-<div id="cell-2" class="cell" data-execution_count="14">
+<div id="cell-2" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"KERAS_BACKEND"</span>] <span class="op">=</span> <span class="st">"tensorflow"</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> keras</span>
@@ -206,7 +206,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="creating-the-dataset" class="level1">
 <h1>Creating the dataset</h1>
 <p>Below is code that is used to create datasets for training, validation, and testing.</p>
-<div id="cell-4" class="cell" data-execution_count="15">
+<div id="cell-4" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>train_ds, validation_ds, test_ds <span class="op">=</span> tfds.load(</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cats_vs_dogs"</span>,</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 40% for training, 10% for validation, and 10% for test (the rest unused)</span></span>
@@ -227,14 +227,14 @@ Number of test samples: 2326</code></pre>
 <section id="resizing-the-images" class="level1">
 <h1>Resizing the images</h1>
 <p>Below, we write code to resize all of the images to a standard size of (150, 150), as well as to rapidly read data by altering the batch_size to 64.</p>
-<div id="cell-6" class="cell" data-execution_count="16">
+<div id="cell-6" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>resize_fn <span class="op">=</span> keras.layers.Resizing(<span class="dv">150</span>, <span class="dv">150</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>train_ds <span class="op">=</span> train_ds.<span class="bu">map</span>(<span class="kw">lambda</span> x, y: (resize_fn(x), y))</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>validation_ds <span class="op">=</span> validation_ds.<span class="bu">map</span>(<span class="kw">lambda</span> x, y: (resize_fn(x), y))</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>test_ds <span class="op">=</span> test_ds.<span class="bu">map</span>(<span class="kw">lambda</span> x, y: (resize_fn(x), y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-7" class="cell" data-execution_count="17">
+<div id="cell-7" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow <span class="im">import</span> data <span class="im">as</span> tf_data</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>batch_size <span class="op">=</span> <span class="dv">64</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -247,7 +247,7 @@ Number of test samples: 2326</code></pre>
 <h1>Visualizing the dataset</h1>
 <p>Below, I have implemented a function called visualize_dataset) that creates two lists, and adds 3 random images of dogs and cats in each, respectively. i use the “take” method to get images of each animal from the dataset to fill the lists.</p>
 <p>Then I iterate through the lists to create a plot that displays 3 random cats in the first row and 3 random dogs in the second row, using the pyplot library.</p>
-<div id="cell-9" class="cell" data-execution_count="18">
+<div id="cell-9" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -284,7 +284,7 @@ Number of test samples: 2326</code></pre>
 <span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>visualize_dataset(train_ds, title<span class="op">=</span><span class="st">"Random Samples from Training Dataset"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>2024-03-11 15:24:34.212439: W tensorflow/core/kernels/data/cache_dataset_ops.cc:858] The calling iterator did not fully read the dataset being cached. In order to avoid unexpected truncation of the dataset, the partially cached contents of the dataset  will be discarded. This can happen if you have an input pipeline similar to `dataset.cache().take(k).repeat()`. You should use `dataset.take(k).cache().repeat()` instead.</code></pre>
+<pre><code>2024-03-19 11:17:30.216798: W tensorflow/core/kernels/data/cache_dataset_ops.cc:858] The calling iterator did not fully read the dataset being cached. In order to avoid unexpected truncation of the dataset, the partially cached contents of the dataset  will be discarded. This can happen if you have an input pipeline similar to `dataset.cache().take(k).repeat()`. You should use `dataset.take(k).cache().repeat()` instead.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -298,7 +298,7 @@ Number of test samples: 2326</code></pre>
 <section id="checking-label-frequencies" class="level1">
 <h1>Checking Label Frequencies</h1>
 <p>Below, we’ve created an iterator that can go through the dataset, which we’ve used to count the total number of images of both cats and dogs by using a simple for loop.</p>
-<div id="cell-11" class="cell" data-execution_count="19">
+<div id="cell-11" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>labels_iterator<span class="op">=</span> train_ds.unbatch().<span class="bu">map</span>(<span class="kw">lambda</span> image, label: label).as_numpy_iterator()</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>cat_count <span class="op">=</span> <span class="dv">0</span></span>
@@ -323,7 +323,7 @@ Number of images with label 1 (dog): 4668</code></pre>
 <h1>Creating model1</h1>
 <p>Below we implemented our first model, which includes different layers to the model. Each layer processes a bit of the input data and produces an output. Each layer consists of a set of neurons that perform specific computation on the input data.</p>
 <p>After implementing the layers into model1, we compile and fit the model to evaluate the test and validation accuracy.</p>
-<div id="cell-13" class="cell" data-execution_count="20">
+<div id="cell-13" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras <span class="im">import</span> layers</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -353,57 +353,60 @@ Number of images with label 1 (dog): 4668</code></pre>
 <span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="co">#                       validation_data=validation_ds.batch(batch_size))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Epoch 1/20
-146/146 [==============================] - 399s 3s/step - loss: 8.8767 - accuracy: 0.5283 - val_loss: 0.6919 - val_accuracy: 0.5155
+146/146 [==============================] - 306s 2s/step - loss: 14.9503 - accuracy: 0.5437 - val_loss: 0.6757 - val_accuracy: 0.5645
 Epoch 2/20
-146/146 [==============================] - 349s 2s/step - loss: 0.6885 - accuracy: 0.5395 - val_loss: 0.6833 - val_accuracy: 0.5464
+146/146 [==============================] - 311s 2s/step - loss: 0.6935 - accuracy: 0.5439 - val_loss: 0.6892 - val_accuracy: 0.5133
 Epoch 3/20
-146/146 [==============================] - 324s 2s/step - loss: 0.6826 - accuracy: 0.5575 - val_loss: 0.6810 - val_accuracy: 0.5559
+146/146 [==============================] - 312s 2s/step - loss: 0.6764 - accuracy: 0.5559 - val_loss: 0.6800 - val_accuracy: 0.5469
 Epoch 4/20
-146/146 [==============================] - 343s 2s/step - loss: 0.6745 - accuracy: 0.5702 - val_loss: 0.6919 - val_accuracy: 0.5408
+146/146 [==============================] - 336s 2s/step - loss: 0.6616 - accuracy: 0.5756 - val_loss: 0.6781 - val_accuracy: 0.5503
 Epoch 5/20
-146/146 [==============================] - 345s 2s/step - loss: 0.6772 - accuracy: 0.5743 - val_loss: 0.7042 - val_accuracy: 0.5288
+146/146 [==============================] - 316s 2s/step - loss: 0.6549 - accuracy: 0.5824 - val_loss: 0.6979 - val_accuracy: 0.5391
 Epoch 6/20
-146/146 [==============================] - 321s 2s/step - loss: 0.6589 - accuracy: 0.5832 - val_loss: 0.7062 - val_accuracy: 0.5322
+146/146 [==============================] - 320s 2s/step - loss: 0.6307 - accuracy: 0.6098 - val_loss: 0.7220 - val_accuracy: 0.5525
 Epoch 7/20
-146/146 [==============================] - 328s 2s/step - loss: 0.6491 - accuracy: 0.5918 - val_loss: 0.7230 - val_accuracy: 0.5245
+146/146 [==============================] - 330s 2s/step - loss: 0.6604 - accuracy: 0.6111 - val_loss: 0.7156 - val_accuracy: 0.5292
 Epoch 8/20
-146/146 [==============================] - 339s 2s/step - loss: 0.6336 - accuracy: 0.6121 - val_loss: 0.7309 - val_accuracy: 0.5258
+146/146 [==============================] - 349s 2s/step - loss: 0.6327 - accuracy: 0.6101 - val_loss: 0.7824 - val_accuracy: 0.5297
 Epoch 9/20
-146/146 [==============================] - 344s 2s/step - loss: 0.6014 - accuracy: 0.6326 - val_loss: 0.8717 - val_accuracy: 0.5404
+146/146 [==============================] - 360s 2s/step - loss: 0.6224 - accuracy: 0.6131 - val_loss: 0.7622 - val_accuracy: 0.5426
 Epoch 10/20
-146/146 [==============================] - 343s 2s/step - loss: 0.6273 - accuracy: 0.6451 - val_loss: 0.8127 - val_accuracy: 0.5357
+146/146 [==============================] - 315s 2s/step - loss: 0.5934 - accuracy: 0.6328 - val_loss: 0.7487 - val_accuracy: 0.5404
 Epoch 11/20
-146/146 [==============================] - 330s 2s/step - loss: 0.5895 - accuracy: 0.6431 - val_loss: 1.0035 - val_accuracy: 0.5245
+146/146 [==============================] - 327s 2s/step - loss: 0.6011 - accuracy: 0.6374 - val_loss: 0.8474 - val_accuracy: 0.5361
 Epoch 12/20
-146/146 [==============================] - 330s 2s/step - loss: 0.5629 - accuracy: 0.6614 - val_loss: 0.8088 - val_accuracy: 0.5279
+146/146 [==============================] - 363s 2s/step - loss: 0.5691 - accuracy: 0.6603 - val_loss: 0.8148 - val_accuracy: 0.5292
 Epoch 13/20
-146/146 [==============================] - 328s 2s/step - loss: 0.5538 - accuracy: 0.6700 - val_loss: 0.8364 - val_accuracy: 0.5340
+146/146 [==============================] - 317s 2s/step - loss: 0.5562 - accuracy: 0.6709 - val_loss: 0.8807 - val_accuracy: 0.5464
 Epoch 14/20
-146/146 [==============================] - 327s 2s/step - loss: 0.5187 - accuracy: 0.7004 - val_loss: 0.8670 - val_accuracy: 0.5426
+146/146 [==============================] - 295s 2s/step - loss: 0.5392 - accuracy: 0.6847 - val_loss: 1.0191 - val_accuracy: 0.5464
 Epoch 15/20
-146/146 [==============================] - 328s 2s/step - loss: 0.5398 - accuracy: 0.6886 - val_loss: 0.9341 - val_accuracy: 0.5421
+146/146 [==============================] - 313s 2s/step - loss: 0.4992 - accuracy: 0.7097 - val_loss: 1.3356 - val_accuracy: 0.5439
 Epoch 16/20
-146/146 [==============================] - 335s 2s/step - loss: 0.5129 - accuracy: 0.7042 - val_loss: 0.9088 - val_accuracy: 0.5404
+146/146 [==============================] - 315s 2s/step - loss: 0.4804 - accuracy: 0.7262 - val_loss: 1.1899 - val_accuracy: 0.5610
 Epoch 17/20
-146/146 [==============================] - 355s 2s/step - loss: 0.4887 - accuracy: 0.7217 - val_loss: 0.9090 - val_accuracy: 0.5563
+146/146 [==============================] - 318s 2s/step - loss: 0.4991 - accuracy: 0.7160 - val_loss: 1.0055 - val_accuracy: 0.5890
 Epoch 18/20
-146/146 [==============================] - 374s 3s/step - loss: 0.4769 - accuracy: 0.7309 - val_loss: 0.9431 - val_accuracy: 0.5533
+146/146 [==============================] - 324s 2s/step - loss: 0.4654 - accuracy: 0.7424 - val_loss: 1.1510 - val_accuracy: 0.5761
 Epoch 19/20
-146/146 [==============================] - 371s 3s/step - loss: 0.4518 - accuracy: 0.7566 - val_loss: 0.9338 - val_accuracy: 0.5550
+146/146 [==============================] - 316s 2s/step - loss: 0.4244 - accuracy: 0.7639 - val_loss: 1.0391 - val_accuracy: 0.5739
 Epoch 20/20
-146/146 [==============================] - 366s 3s/step - loss: 0.3941 - accuracy: 0.7881 - val_loss: 0.9704 - val_accuracy: 0.5602</code></pre>
+146/146 [==============================] - 298s 2s/step - loss: 0.4085 - accuracy: 0.7900 - val_loss: 1.1309 - val_accuracy: 0.5641</code></pre>
 </div>
 </div>
 <p>Some things I experimented with was increasing the model complexity by adding more layers. Additionally, I tried to regularized the data to prevent overfitting.</p>
-<p><strong>The validation accuracy of my model stabilized between 62% and 63% during training, which is higher than the baseline.</strong></p>
+<p><strong>The validation accuracy of my model stabilized between 56% and 57% during training, which is higher than the baseline.</strong></p>
 </section>
 <section id="visualizing-the-model-accuracy" class="level1">
 <h1>Visualizing the model accuracy</h1>
-<p>We use matplotlib.pyplot to visualize the history, as seen below:</p>
-<div id="cell-16" class="cell" data-execution_count="21">
+<p>We use matplotlib.pyplot to visualize the training and validation history, as seen below:</p>
+<div id="cell-16" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>plt.plot(history.history[<span class="st">"accuracy"</span>])</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>plt.gca().<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"epoch"</span>, ylabel<span class="op">=</span><span class="st">"training accuracy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># plotting the training accuracy</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>plt.plot(history.history[<span class="st">"accuracy"</span>], label <span class="op">=</span> <span class="st">"training"</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>plt.plot(history.history[<span class="st">"val_accuracy"</span>], label <span class="op">=</span> <span class="st">"validation"</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>plt.gca().<span class="bu">set</span>(xlabel <span class="op">=</span> <span class="st">"epoch"</span>, ylabel <span class="op">=</span> <span class="st">"accuracy"</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -419,7 +422,7 @@ Epoch 20/20
 <p>The random flip layer is implemented, by randomly mirroring images, and initializing the layer to that.</p>
 <p>Similarly, the random rotation layer by randomly rotating the images, and training a layer to the random rotations.</p>
 <p>I’ve added before and after photos for the effect of both layers for visual aid. See code and images below.</p>
-<div id="cell-18" class="cell" data-execution_count="22">
+<div id="cell-18" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#random_flip_layer</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
@@ -462,7 +465,7 @@ Epoch 20/20
 </div>
 </div>
 </div>
-<div id="cell-19" class="cell" data-execution_count="23">
+<div id="cell-19" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#RandomRotation layer</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>sample_images <span class="op">=</span> []</span>
@@ -506,7 +509,7 @@ Epoch 20/20
 <section id="model-2" class="level1">
 <h1>Model 2</h1>
 <p>After creating those two layers above, we include them in the second model (in addition to all the other layers from model1) to hopefully find a more accurate model. See code below.</p>
-<div id="cell-21" class="cell" data-execution_count="24">
+<div id="cell-21" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#creating model2 with augmentation layers</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>model2 <span class="op">=</span> tf.keras.Sequential([</span>
@@ -533,53 +536,55 @@ Epoch 20/20
 <span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>                      validation_data<span class="op">=</span>validation_ds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Epoch 1/20
-146/146 [==============================] - 64s 424ms/step - loss: 14.0102 - accuracy: 0.5652 - val_loss: 0.6646 - val_accuracy: 0.6028
+146/146 [==============================] - 55s 370ms/step - loss: 22.8603 - accuracy: 0.5318 - val_loss: 0.6931 - val_accuracy: 0.5193
 Epoch 2/20
-146/146 [==============================] - 73s 499ms/step - loss: 0.6700 - accuracy: 0.5996 - val_loss: 0.6511 - val_accuracy: 0.6277
+146/146 [==============================] - 55s 377ms/step - loss: 0.6906 - accuracy: 0.5332 - val_loss: 0.6912 - val_accuracy: 0.5335
 Epoch 3/20
-146/146 [==============================] - 73s 500ms/step - loss: 0.6526 - accuracy: 0.6272 - val_loss: 0.6448 - val_accuracy: 0.6427
+146/146 [==============================] - 58s 398ms/step - loss: 0.6921 - accuracy: 0.5378 - val_loss: 0.6896 - val_accuracy: 0.5370
 Epoch 4/20
-146/146 [==============================] - 74s 507ms/step - loss: 0.6405 - accuracy: 0.6420 - val_loss: 0.6272 - val_accuracy: 0.6711
+146/146 [==============================] - 58s 399ms/step - loss: 0.6914 - accuracy: 0.5396 - val_loss: 0.6888 - val_accuracy: 0.5344
 Epoch 5/20
-146/146 [==============================] - 73s 501ms/step - loss: 0.6301 - accuracy: 0.6495 - val_loss: 0.6133 - val_accuracy: 0.6883
+146/146 [==============================] - 60s 413ms/step - loss: 0.6912 - accuracy: 0.5410 - val_loss: 0.6853 - val_accuracy: 0.5516
 Epoch 6/20
-146/146 [==============================] - 74s 510ms/step - loss: 0.6266 - accuracy: 0.6462 - val_loss: 0.6142 - val_accuracy: 0.6776
+146/146 [==============================] - 63s 430ms/step - loss: 0.6902 - accuracy: 0.5405 - val_loss: 0.6860 - val_accuracy: 0.5585
 Epoch 7/20
-146/146 [==============================] - 77s 528ms/step - loss: 0.6211 - accuracy: 0.6627 - val_loss: 0.6052 - val_accuracy: 0.6879
+146/146 [==============================] - 98s 674ms/step - loss: 0.6850 - accuracy: 0.5566 - val_loss: 0.6872 - val_accuracy: 0.5365
 Epoch 8/20
-146/146 [==============================] - 77s 526ms/step - loss: 0.6068 - accuracy: 0.6754 - val_loss: 0.5935 - val_accuracy: 0.7064
+146/146 [==============================] - 107s 735ms/step - loss: 0.6743 - accuracy: 0.5927 - val_loss: 0.6691 - val_accuracy: 0.5929
 Epoch 9/20
-146/146 [==============================] - 77s 528ms/step - loss: 0.6003 - accuracy: 0.6833 - val_loss: 0.5868 - val_accuracy: 0.6935
+146/146 [==============================] - 83s 564ms/step - loss: 0.6794 - accuracy: 0.5552 - val_loss: 0.6819 - val_accuracy: 0.5787
 Epoch 10/20
-146/146 [==============================] - 74s 505ms/step - loss: 0.5975 - accuracy: 0.6876 - val_loss: 0.5812 - val_accuracy: 0.6900
+146/146 [==============================] - 78s 536ms/step - loss: 0.6782 - accuracy: 0.5668 - val_loss: 0.6802 - val_accuracy: 0.5709
 Epoch 11/20
-146/146 [==============================] - 74s 508ms/step - loss: 0.5929 - accuracy: 0.6910 - val_loss: 0.5637 - val_accuracy: 0.7034
+146/146 [==============================] - 94s 639ms/step - loss: 0.6621 - accuracy: 0.6145 - val_loss: 0.6571 - val_accuracy: 0.6195
 Epoch 12/20
-146/146 [==============================] - 72s 496ms/step - loss: 0.5835 - accuracy: 0.6937 - val_loss: 0.5592 - val_accuracy: 0.7240
+146/146 [==============================] - 84s 575ms/step - loss: 0.6636 - accuracy: 0.6098 - val_loss: 0.6543 - val_accuracy: 0.6165
 Epoch 13/20
-146/146 [==============================] - 72s 492ms/step - loss: 0.5918 - accuracy: 0.6905 - val_loss: 0.5864 - val_accuracy: 0.6943
+146/146 [==============================] - 72s 493ms/step - loss: 0.6567 - accuracy: 0.6176 - val_loss: 0.6504 - val_accuracy: 0.6242
 Epoch 14/20
-146/146 [==============================] - 75s 510ms/step - loss: 0.5700 - accuracy: 0.7091 - val_loss: 0.5613 - val_accuracy: 0.7283
+146/146 [==============================] - 75s 511ms/step - loss: 0.6474 - accuracy: 0.6352 - val_loss: 0.6377 - val_accuracy: 0.6432
 Epoch 15/20
-146/146 [==============================] - 70s 479ms/step - loss: 0.5692 - accuracy: 0.7075 - val_loss: 0.5369 - val_accuracy: 0.7369
+146/146 [==============================] - 69s 468ms/step - loss: 0.6507 - accuracy: 0.6311 - val_loss: 0.6370 - val_accuracy: 0.6466
 Epoch 16/20
-146/146 [==============================] - 72s 494ms/step - loss: 0.5681 - accuracy: 0.7055 - val_loss: 0.5673 - val_accuracy: 0.7193
+146/146 [==============================] - 81s 553ms/step - loss: 0.6461 - accuracy: 0.6357 - val_loss: 0.6307 - val_accuracy: 0.6496
 Epoch 17/20
-146/146 [==============================] - 70s 479ms/step - loss: 0.5588 - accuracy: 0.7099 - val_loss: 0.5414 - val_accuracy: 0.7334
+146/146 [==============================] - 73s 497ms/step - loss: 0.6444 - accuracy: 0.6355 - val_loss: 0.6438 - val_accuracy: 0.6281
 Epoch 18/20
-146/146 [==============================] - 71s 485ms/step - loss: 0.5510 - accuracy: 0.7207 - val_loss: 0.5134 - val_accuracy: 0.7459
+146/146 [==============================] - 70s 478ms/step - loss: 0.6401 - accuracy: 0.6403 - val_loss: 0.6325 - val_accuracy: 0.6561
 Epoch 19/20
-146/146 [==============================] - 74s 505ms/step - loss: 0.5360 - accuracy: 0.7313 - val_loss: 0.5164 - val_accuracy: 0.7567
+146/146 [==============================] - 69s 474ms/step - loss: 0.6352 - accuracy: 0.6479 - val_loss: 0.6508 - val_accuracy: 0.6320
 Epoch 20/20
-146/146 [==============================] - 73s 497ms/step - loss: 0.5382 - accuracy: 0.7312 - val_loss: 0.5260 - val_accuracy: 0.7468</code></pre>
+146/146 [==============================] - 83s 568ms/step - loss: 0.6357 - accuracy: 0.6444 - val_loss: 0.6530 - val_accuracy: 0.6208</code></pre>
 </div>
 </div>
-<p><strong>The accuracy of my model stabilized between 64% and 65% during training, which is a bit higher than in model1, and still higher than 60%.</strong></p>
+<p><strong>The accuracy of my model stabilized between 62% and 63% during training, which is a bit higher than in model1, and still higher than 60%.</strong></p>
 <p>In model2, if the accuracy stabilized around 64% to 65% during training and the validation accuracy closely tracked the training accuracy without diverging significantly, it indicates that the model may not be overfitting. Signs of overfitting include a large gap between training and validation accuracy or when the validation accuracy starts decreasing while the training accuracy continues to increase.</p>
 <p>As with model1, we will visualize our results.</p>
-<div id="cell-23" class="cell" data-execution_count="31">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>plt.plot(history2.history[<span class="st">"accuracy"</span>])</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>plt.gca().<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"epoch"</span>, ylabel<span class="op">=</span><span class="st">"training accuracy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-23" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>plt.plot(history2.history[<span class="st">"accuracy"</span>], label <span class="op">=</span> <span class="st">"training"</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>plt.plot(history2.history[<span class="st">"val_accuracy"</span>], label <span class="op">=</span> <span class="st">"validation"</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>plt.gca().<span class="bu">set</span>(xlabel <span class="op">=</span> <span class="st">"epoch"</span>, ylabel <span class="op">=</span> <span class="st">"accuracy"</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -592,7 +597,7 @@ Epoch 20/20
 <section id="model-3" class="level1">
 <h1>Model 3</h1>
 <p>We implemented model 3 hoping to make training the model faster by implemented a preprocessor layer that would handle the scaling of the RGB values prior to the training process. This allows the computer to focus more energy on handling actual signal in the data and less energy having the weights adjust to the data scale.</p>
-<div id="cell-25" class="cell" data-execution_count="32">
+<div id="cell-25" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> keras.Input(shape<span class="op">=</span>(<span class="dv">150</span>, <span class="dv">150</span>, <span class="dv">3</span>))</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The pixel values have the range of (0, 255), but many models will work better if rescaled to (-1, 1.)</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># outputs: `(inputs * scale) + offset`</span></span>
@@ -624,45 +629,45 @@ Epoch 20/20
 <span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>                      validation_data<span class="op">=</span>validation_ds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Epoch 1/20
-146/146 [==============================] - 67s 456ms/step - loss: 0.7266 - accuracy: 0.5728 - val_loss: 0.6305 - val_accuracy: 0.6664
+146/146 [==============================] - 67s 452ms/step - loss: 0.7907 - accuracy: 0.5278 - val_loss: 0.6691 - val_accuracy: 0.6032
 Epoch 2/20
-146/146 [==============================] - 69s 470ms/step - loss: 0.6211 - accuracy: 0.6585 - val_loss: 0.5609 - val_accuracy: 0.7223
+146/146 [==============================] - 67s 455ms/step - loss: 0.6476 - accuracy: 0.6163 - val_loss: 0.6015 - val_accuracy: 0.6917
 Epoch 3/20
-146/146 [==============================] - 66s 451ms/step - loss: 0.5794 - accuracy: 0.6969 - val_loss: 0.5290 - val_accuracy: 0.7442
+146/146 [==============================] - 72s 496ms/step - loss: 0.6210 - accuracy: 0.6577 - val_loss: 0.5661 - val_accuracy: 0.7077
 Epoch 4/20
-146/146 [==============================] - 65s 443ms/step - loss: 0.5574 - accuracy: 0.7180 - val_loss: 0.5131 - val_accuracy: 0.7528
+146/146 [==============================] - 66s 449ms/step - loss: 0.5879 - accuracy: 0.6857 - val_loss: 0.5442 - val_accuracy: 0.7197
 Epoch 5/20
-146/146 [==============================] - 66s 449ms/step - loss: 0.5419 - accuracy: 0.7316 - val_loss: 0.5037 - val_accuracy: 0.7571
+146/146 [==============================] - 72s 495ms/step - loss: 0.5655 - accuracy: 0.7035 - val_loss: 0.5226 - val_accuracy: 0.7360
 Epoch 6/20
-146/146 [==============================] - 65s 448ms/step - loss: 0.5307 - accuracy: 0.7329 - val_loss: 0.4927 - val_accuracy: 0.7623
+146/146 [==============================] - 74s 509ms/step - loss: 0.5481 - accuracy: 0.7218 - val_loss: 0.5098 - val_accuracy: 0.7451
 Epoch 7/20
-146/146 [==============================] - 72s 494ms/step - loss: 0.5173 - accuracy: 0.7459 - val_loss: 0.4771 - val_accuracy: 0.7678
+146/146 [==============================] - 64s 440ms/step - loss: 0.5369 - accuracy: 0.7279 - val_loss: 0.5018 - val_accuracy: 0.7515
 Epoch 8/20
-146/146 [==============================] - 69s 471ms/step - loss: 0.5063 - accuracy: 0.7536 - val_loss: 0.4839 - val_accuracy: 0.7704
+146/146 [==============================] - 67s 460ms/step - loss: 0.5211 - accuracy: 0.7411 - val_loss: 0.4842 - val_accuracy: 0.7696
 Epoch 9/20
-146/146 [==============================] - 67s 459ms/step - loss: 0.5076 - accuracy: 0.7545 - val_loss: 0.4746 - val_accuracy: 0.7760
+146/146 [==============================] - 74s 505ms/step - loss: 0.5116 - accuracy: 0.7488 - val_loss: 0.4798 - val_accuracy: 0.7786
 Epoch 10/20
-146/146 [==============================] - 64s 440ms/step - loss: 0.4912 - accuracy: 0.7695 - val_loss: 0.4892 - val_accuracy: 0.7713
+146/146 [==============================] - 80s 544ms/step - loss: 0.4998 - accuracy: 0.7515 - val_loss: 0.4784 - val_accuracy: 0.7777
 Epoch 11/20
-146/146 [==============================] - 65s 447ms/step - loss: 0.4854 - accuracy: 0.7668 - val_loss: 0.4462 - val_accuracy: 0.7954
+146/146 [==============================] - 80s 545ms/step - loss: 0.4951 - accuracy: 0.7591 - val_loss: 0.4841 - val_accuracy: 0.7739
 Epoch 12/20
-146/146 [==============================] - 64s 440ms/step - loss: 0.4799 - accuracy: 0.7710 - val_loss: 0.4689 - val_accuracy: 0.7846
+146/146 [==============================] - 79s 539ms/step - loss: 0.4900 - accuracy: 0.7635 - val_loss: 0.4783 - val_accuracy: 0.7726
 Epoch 13/20
-146/146 [==============================] - 66s 455ms/step - loss: 0.4724 - accuracy: 0.7740 - val_loss: 0.4539 - val_accuracy: 0.7975
+146/146 [==============================] - 80s 545ms/step - loss: 0.4768 - accuracy: 0.7709 - val_loss: 0.4768 - val_accuracy: 0.7696
 Epoch 14/20
-146/146 [==============================] - 65s 443ms/step - loss: 0.4642 - accuracy: 0.7810 - val_loss: 0.4534 - val_accuracy: 0.7962
+146/146 [==============================] - 74s 507ms/step - loss: 0.4806 - accuracy: 0.7703 - val_loss: 0.4698 - val_accuracy: 0.7743
 Epoch 15/20
-146/146 [==============================] - 65s 445ms/step - loss: 0.4613 - accuracy: 0.7825 - val_loss: 0.4515 - val_accuracy: 0.8014
+146/146 [==============================] - 67s 456ms/step - loss: 0.4709 - accuracy: 0.7769 - val_loss: 0.4701 - val_accuracy: 0.7799
 Epoch 16/20
-146/146 [==============================] - 64s 435ms/step - loss: 0.4512 - accuracy: 0.7828 - val_loss: 0.4683 - val_accuracy: 0.7829
+146/146 [==============================] - 68s 465ms/step - loss: 0.4588 - accuracy: 0.7836 - val_loss: 0.4648 - val_accuracy: 0.7902
 Epoch 17/20
-146/146 [==============================] - 64s 440ms/step - loss: 0.4552 - accuracy: 0.7875 - val_loss: 0.4413 - val_accuracy: 0.7979
+146/146 [==============================] - 67s 460ms/step - loss: 0.4580 - accuracy: 0.7819 - val_loss: 0.4735 - val_accuracy: 0.7915
 Epoch 18/20
-146/146 [==============================] - 66s 452ms/step - loss: 0.4485 - accuracy: 0.7940 - val_loss: 0.4312 - val_accuracy: 0.8083
+146/146 [==============================] - 70s 481ms/step - loss: 0.4575 - accuracy: 0.7838 - val_loss: 0.4757 - val_accuracy: 0.7898
 Epoch 19/20
-146/146 [==============================] - 71s 483ms/step - loss: 0.4311 - accuracy: 0.8032 - val_loss: 0.4197 - val_accuracy: 0.8156
+146/146 [==============================] - 68s 467ms/step - loss: 0.4505 - accuracy: 0.7886 - val_loss: 0.4665 - val_accuracy: 0.7889
 Epoch 20/20
-146/146 [==============================] - 69s 473ms/step - loss: 0.4303 - accuracy: 0.8077 - val_loss: 0.4345 - val_accuracy: 0.8113</code></pre>
+146/146 [==============================] - 74s 504ms/step - loss: 0.4492 - accuracy: 0.7844 - val_loss: 0.4759 - val_accuracy: 0.7906</code></pre>
 </div>
 </div>
 <p><strong>The validation accuracy stabilized between 80% and 82% during training</strong> This is much higher than the val_accuracy of model1, which was ~60%.</p>
@@ -671,9 +676,11 @@ Epoch 20/20
 <section id="visualizing-model3-results" class="level1">
 <h1>Visualizing model3 results</h1>
 <p>We will once again visualize these results.</p>
-<div id="cell-28" class="cell" data-execution_count="33">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>plt.plot(history3.history[<span class="st">"accuracy"</span>])</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>plt.gca().<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"epoch"</span>, ylabel<span class="op">=</span><span class="st">"training accuracy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-28" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>plt.plot(history3.history[<span class="st">"accuracy"</span>], label <span class="op">=</span> <span class="st">"training"</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>plt.plot(history3.history[<span class="st">"val_accuracy"</span>], label <span class="op">=</span> <span class="st">"validation"</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>plt.gca().<span class="bu">set</span>(xlabel <span class="op">=</span> <span class="st">"epoch"</span>, ylabel <span class="op">=</span> <span class="st">"accuracy"</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -686,7 +693,7 @@ Epoch 20/20
 <section id="transfer-learning" class="level1">
 <h1>Transfer Learning</h1>
 <p>Transfer learning is essentially accessing a pre-existing base model and incorporating it into our own model. The first few lines of the code below is downloading MobileNetV3Large, which will serve as our base model. We create a base_model_layer that we implement into our model4, which is constructed in the same manner as the previous 3 models.</p>
-<div id="cell-30" class="cell" data-execution_count="35">
+<div id="cell-30" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>IMG_SHAPE <span class="op">=</span> (<span class="dv">150</span>, <span class="dv">150</span>, <span class="dv">3</span>)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>base_model <span class="op">=</span> keras.applications.MobileNetV3Large(input_shape<span class="op">=</span>IMG_SHAPE,</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>                                               include_top<span class="op">=</span><span class="va">False</span>,</span>
@@ -721,45 +728,45 @@ Epoch 20/20
 <span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a>                      validation_data<span class="op">=</span>validation_ds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Epoch 1/20
-146/146 [==============================] - 41s 262ms/step - loss: 0.2380 - accuracy: 0.8972 - val_loss: 0.0899 - val_accuracy: 0.9656
+146/146 [==============================] - 52s 336ms/step - loss: 0.2513 - accuracy: 0.8903 - val_loss: 0.0946 - val_accuracy: 0.9669
 Epoch 2/20
-146/146 [==============================] - 37s 253ms/step - loss: 0.1325 - accuracy: 0.9462 - val_loss: 0.0767 - val_accuracy: 0.9725
+146/146 [==============================] - 635s 4s/step - loss: 0.1390 - accuracy: 0.9422 - val_loss: 0.0785 - val_accuracy: 0.9729
 Epoch 3/20
-146/146 [==============================] - 37s 256ms/step - loss: 0.1177 - accuracy: 0.9525 - val_loss: 0.0814 - val_accuracy: 0.9699
+146/146 [==============================] - 425s 3s/step - loss: 0.1180 - accuracy: 0.9521 - val_loss: 0.0724 - val_accuracy: 0.9746
 Epoch 4/20
-146/146 [==============================] - 38s 259ms/step - loss: 0.1106 - accuracy: 0.9550 - val_loss: 0.0710 - val_accuracy: 0.9759
+146/146 [==============================] - 39s 269ms/step - loss: 0.1152 - accuracy: 0.9517 - val_loss: 0.0735 - val_accuracy: 0.9742
 Epoch 5/20
-146/146 [==============================] - 40s 273ms/step - loss: 0.1081 - accuracy: 0.9570 - val_loss: 0.0714 - val_accuracy: 0.9755
+146/146 [==============================] - 36s 248ms/step - loss: 0.1124 - accuracy: 0.9535 - val_loss: 0.0663 - val_accuracy: 0.9759
 Epoch 6/20
-146/146 [==============================] - 41s 280ms/step - loss: 0.1108 - accuracy: 0.9567 - val_loss: 0.0782 - val_accuracy: 0.9733
+146/146 [==============================] - 37s 256ms/step - loss: 0.1105 - accuracy: 0.9557 - val_loss: 0.0665 - val_accuracy: 0.9785
 Epoch 7/20
-146/146 [==============================] - 51s 350ms/step - loss: 0.1054 - accuracy: 0.9570 - val_loss: 0.0728 - val_accuracy: 0.9738
+146/146 [==============================] - 37s 256ms/step - loss: 0.1046 - accuracy: 0.9569 - val_loss: 0.0719 - val_accuracy: 0.9742
 Epoch 8/20
-146/146 [==============================] - 45s 308ms/step - loss: 0.1033 - accuracy: 0.9595 - val_loss: 0.0708 - val_accuracy: 0.9746
+146/146 [==============================] - 37s 256ms/step - loss: 0.1065 - accuracy: 0.9560 - val_loss: 0.0656 - val_accuracy: 0.9764
 Epoch 9/20
-146/146 [==============================] - 42s 287ms/step - loss: 0.0892 - accuracy: 0.9632 - val_loss: 0.0670 - val_accuracy: 0.9772
+146/146 [==============================] - 38s 263ms/step - loss: 0.1007 - accuracy: 0.9557 - val_loss: 0.0631 - val_accuracy: 0.9789
 Epoch 10/20
-146/146 [==============================] - 41s 281ms/step - loss: 0.0995 - accuracy: 0.9594 - val_loss: 0.0642 - val_accuracy: 0.9781
+146/146 [==============================] - 39s 268ms/step - loss: 0.0992 - accuracy: 0.9584 - val_loss: 0.0697 - val_accuracy: 0.9742
 Epoch 11/20
-146/146 [==============================] - 41s 279ms/step - loss: 0.0935 - accuracy: 0.9623 - val_loss: 0.0660 - val_accuracy: 0.9768
+146/146 [==============================] - 39s 266ms/step - loss: 0.0962 - accuracy: 0.9597 - val_loss: 0.0655 - val_accuracy: 0.9781
 Epoch 12/20
-146/146 [==============================] - 41s 278ms/step - loss: 0.0931 - accuracy: 0.9637 - val_loss: 0.0701 - val_accuracy: 0.9755
+146/146 [==============================] - 40s 273ms/step - loss: 0.0930 - accuracy: 0.9617 - val_loss: 0.0640 - val_accuracy: 0.9776
 Epoch 13/20
-146/146 [==============================] - 42s 284ms/step - loss: 0.0975 - accuracy: 0.9611 - val_loss: 0.0644 - val_accuracy: 0.9772
+146/146 [==============================] - 38s 261ms/step - loss: 0.0917 - accuracy: 0.9632 - val_loss: 0.0628 - val_accuracy: 0.9785
 Epoch 14/20
-146/146 [==============================] - 40s 274ms/step - loss: 0.0879 - accuracy: 0.9657 - val_loss: 0.0729 - val_accuracy: 0.9738
+146/146 [==============================] - 39s 266ms/step - loss: 0.0908 - accuracy: 0.9613 - val_loss: 0.0648 - val_accuracy: 0.9781
 Epoch 15/20
-146/146 [==============================] - 41s 279ms/step - loss: 0.0938 - accuracy: 0.9626 - val_loss: 0.0666 - val_accuracy: 0.9772
+146/146 [==============================] - 39s 268ms/step - loss: 0.0892 - accuracy: 0.9638 - val_loss: 0.0632 - val_accuracy: 0.9802
 Epoch 16/20
-146/146 [==============================] - 41s 280ms/step - loss: 0.0884 - accuracy: 0.9661 - val_loss: 0.0727 - val_accuracy: 0.9738
+146/146 [==============================] - 41s 279ms/step - loss: 0.0940 - accuracy: 0.9617 - val_loss: 0.0658 - val_accuracy: 0.9781
 Epoch 17/20
-146/146 [==============================] - 41s 282ms/step - loss: 0.0954 - accuracy: 0.9607 - val_loss: 0.0687 - val_accuracy: 0.9768
+146/146 [==============================] - 39s 266ms/step - loss: 0.0881 - accuracy: 0.9639 - val_loss: 0.0687 - val_accuracy: 0.9772
 Epoch 18/20
-146/146 [==============================] - 40s 274ms/step - loss: 0.0920 - accuracy: 0.9622 - val_loss: 0.0729 - val_accuracy: 0.9738
+146/146 [==============================] - 40s 273ms/step - loss: 0.0911 - accuracy: 0.9636 - val_loss: 0.0671 - val_accuracy: 0.9776
 Epoch 19/20
-146/146 [==============================] - 40s 272ms/step - loss: 0.0941 - accuracy: 0.9629 - val_loss: 0.0711 - val_accuracy: 0.9755
+146/146 [==============================] - 39s 268ms/step - loss: 0.0965 - accuracy: 0.9613 - val_loss: 0.0684 - val_accuracy: 0.9768
 Epoch 20/20
-146/146 [==============================] - 41s 277ms/step - loss: 0.0918 - accuracy: 0.9612 - val_loss: 0.0701 - val_accuracy: 0.9764</code></pre>
+146/146 [==============================] - 39s 268ms/step - loss: 0.0931 - accuracy: 0.9609 - val_loss: 0.0657 - val_accuracy: 0.9764</code></pre>
 </div>
 </div>
 <p><strong>The model4 validation accuracy stabilzed between 97% and 98%, which is greater than the required 93%</strong> This val_accuracy is also much higher than from model1, which was around 60%.</p>
@@ -767,9 +774,11 @@ Epoch 20/20
 </section>
 <section id="visualizing-the-results" class="level1">
 <h1>Visualizing the results</h1>
-<div id="cell-33" class="cell" data-execution_count="36">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>plt.plot(history4.history[<span class="st">"accuracy"</span>])</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>plt.gca().<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"epoch"</span>, ylabel<span class="op">=</span><span class="st">"training accuracy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-33" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>plt.plot(history4.history[<span class="st">"accuracy"</span>], label <span class="op">=</span> <span class="st">"training"</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>plt.plot(history4.history[<span class="st">"val_accuracy"</span>], label <span class="op">=</span> <span class="st">"validation"</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>plt.gca().<span class="bu">set</span>(xlabel <span class="op">=</span> <span class="st">"epoch"</span>, ylabel <span class="op">=</span> <span class="st">"accuracy"</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -782,14 +791,14 @@ Epoch 20/20
 <section id="score-on-test-data" class="level1">
 <h1>Score on Test Data</h1>
 <p>This code below will evaluate the accuracy of model4, which is the most performant model of the four. This will evaluate the unseen test dataset and print the value it returns.</p>
-<div id="cell-35" class="cell" data-execution_count="37">
+<div id="cell-35" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>test_loss, test_accuracy <span class="op">=</span> model4.evaluate(test_ds)</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the test accuracy</span></span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Test accuracy: </span><span class="sc">{</span>test_accuracy<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>37/37 [==============================] - 8s 211ms/step - loss: 0.0784 - accuracy: 0.9742
-Test accuracy: 0.9742046594619751</code></pre>
+<pre><code>37/37 [==============================] - 8s 198ms/step - loss: 0.0741 - accuracy: 0.9708
+Test accuracy: 0.970765233039856</code></pre>
 </div>
 </div>
 <p><strong>The test accuracy was over 97%, so we can see that the model works well.</strong> This suggests that the model has effectively learned to distinguish between cats and dogs in the test dataset.</p>
