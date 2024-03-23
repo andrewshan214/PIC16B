@@ -439,7 +439,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="country-recommendation-function" class="level2">
 <h2 class="anchored" data-anchor-id="country-recommendation-function">Country Recommendation Function</h2>
-<p>The recommend_countries function works by comparing the user’s top songs with the top songs of each individual country. By utilizing the SQLite query, we were able to make the algorithm relatively efficient (compared to iterating through every single user’s songs and each country’s songs). It finds the “DISTINCT” songs from each country, and creates a score based off the total number of distinct song occurrences in the user’s top songs. <img src="Country-Recommendation.png" class="img-fluid" alt="output"></p>
+<p>The recommend_countries function works by comparing the user’s top songs with the top songs of each individual country. By utilizing the SQLite query, we were able to make the algorithm relatively efficient (compared to iterating through every single user’s songs and each country’s songs). It finds the “DISTINCT” songs from each country, and creates a score based off the total number of distinct song occurrences in the user’s top songs. <img src="recommendcountries.png" class="img-fluid" alt="output"></p>
 </section>
 <section id="visualizing-the-data-visualization.py" class="level2">
 <h2 class="anchored" data-anchor-id="visualizing-the-data-visualization.py">Visualizing the data: visualization.py</h2>
@@ -539,12 +539,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="web-development-plotlydash.py" class="level2">
 <h2 class="anchored" data-anchor-id="web-development-plotlydash.py">Web development: plotlydash.py</h2>
 <p>We created a Plotly Dash web application that allows users to visualize different aspects of their music preferences. The app consists of a dropdown menu to select the type of data to visualize (top songs, top artists, or recommended countries) and a graph area where the selected data will be displayed.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="Website-Demo.png" class="img-fluid figure-img"></p>
-<figcaption>output</figcaption>
-</figure>
-</div>
 <div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px </span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Import your functions or ensure they are defined in this script</span></span>
@@ -616,6 +610,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-69"><a href="#cb15-69" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the app</span></span>
 <span id="cb15-70"><a href="#cb15-70" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">'__main__'</span>:</span>
 <span id="cb15-71"><a href="#cb15-71" aria-hidden="true" tabindex="-1"></a>    app.run_server(debug<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="homepage.png" class="img-fluid" alt="output"> <img src="topartists.png" class="img-fluid" alt="output"></p>
 <section id="conclusion" class="level3">
 <h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
 <p>To summarize, our project correlates a Spotify user’s listening data with a specific country. We collected data from global charts through web scraping, utilized a SQL database for data management, and showcased the insights through visualizations on a Plotly Dash website. While our project is generally free from ethical or environmental concerns, it’s essential to acknowledge potential privacy implications related to sharing user data through Spotify authorization.</p>
